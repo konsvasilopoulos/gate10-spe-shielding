@@ -1,0 +1,2 @@
+material,n_seeds,dR80_mean_cm,dR80_sd_cm,dR_pstar_cm,dR_diff_mm,dR_diff_sd_mm,e_out_mean_MeV,e_out_sd_MeV,e_pstar_MeV,e_diff_pct
+G4_Ti,1,6.505191640479643,nan,6.433,0.7219164047964277,nan,111.19880124374666,nan,111.34,-0.12681763629723858

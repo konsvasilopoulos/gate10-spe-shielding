@@ -1,0 +1,36 @@
+spectrum,material,min_areal_for_BFO_250_g_cm2
+kold1956,POLYETHYLENE,15.2
+kold1956,PLEXIGLASS,16.3
+kold1956,Al,19.6
+kold1956,Ti,> 20
+kold1956,Fe,> 20
+kold1956,Cu,> 20
+kold1956,Pb,> 20
+kold1972,POLYETHYLENE,12.2
+kold1972,PLEXIGLASS,13.4
+kold1972,Al,16.7
+kold1972,Ti,18.4
+kold1972,Fe,18.7
+kold1972,Cu,19.4
+kold1972,Pb,> 20
+kold1989,POLYETHYLENE,17.5
+kold1989,PLEXIGLASS,18.8
+kold1989,Al,> 20
+kold1989,Ti,> 20
+kold1989,Fe,> 20
+kold1989,Cu,> 20
+kold1989,Pb,> 20
+webber1956,POLYETHYLENE,≤ 5
+webber1956,PLEXIGLASS,≤ 5
+webber1956,Al,6.2
+webber1956,Ti,7.0
+webber1956,Fe,7.0
+webber1956,Cu,7.3
+webber1956,Pb,9.7
+king1972,POLYETHYLENE,10.3
+king1972,PLEXIGLASS,11.4
+king1972,Al,14.6
+king1972,Ti,16.1
+king1972,Fe,16.4
+king1972,Cu,17.1
+king1972,Pb,> 20

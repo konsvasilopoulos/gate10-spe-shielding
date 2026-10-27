@@ -1,0 +1,26 @@
+{
+  "title": "gate10-spe-shielding: GATE 10 simulations of solar particle event shielding",
+  "description": "Simulation and analysis code, response matrix and result tables for the article 'Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum'. GATE 10 (opengate 10.0.0, Geant4 11.2.p01) transport of solar particle event protons and alpha particles through seven shield materials into a water phantom; absorbed dose and dose equivalent (ICRP 60); NASA code-comparison benchmark; a response matrix (30 MeV-5 GeV, 5-40 g/cm2) for folding any SPE spectrum.",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Vasilopoulos, Konstantinos",
+      "affiliation": "University of Patras, Greece",
+      "orcid": "0009-0001-7245-1404"
+    }
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": [
+    "space radiation",
+    "solar particle events",
+    "radiation shielding",
+    "GATE",
+    "Geant4",
+    "Monte Carlo",
+    "dose equivalent",
+    "response matrix",
+    "polyethylene",
+    "aluminium"
+  ]
+}

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this code or the response matrix, please cite the article below."
+title: "gate10-spe-shielding: GATE 10 simulations of solar particle event shielding"
+authors:
+  - family-names: Vasilopoulos
+    given-names: Konstantinos
+    affiliation: "University of Patras, Greece"
+    orcid: "https://orcid.org/0009-0001-7245-1404"
+version: "1.0.0"
+license: MIT
+repository-code: "https://github.com/konsvasilopoulos/gate10-spe-shielding"
+preferred-citation:
+  type: article
+  title: "Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum"
+  authors:
+    - family-names: Vasilopoulos
+      given-names: Konstantinos
+      orcid: "https://orcid.org/0009-0001-7245-1404"
+  journal: "Life Sciences in Space Research"
+  year: 2026
+  notes: "Submitted"

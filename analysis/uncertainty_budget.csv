@@ -1,0 +1,12 @@
+source,quantity,estimate,comment
+Statistics (mean dose 0-30),D,0.9 % (max 4.0 %),"upper bound, fully correlated voxels"
+Statistics (skin 0-0.3),D,0.7 % (max 1.7 %),
+Statistics (ratio to Al),D/D_Al,1.2 % (max 5.4 %),
+LET binning / Q(Lbar),H,1.5 % (bins 2x coarser),one bin per particle: 1 %
+Spectrum sampling (100 bins/group),D,< 0.01 %,analytic CSDA
+"Upper spectrum limit (kold1956, 5 GeV)",D,0.00 % (20 g/cm2),"analytic, up to 10 GeV"
+"Upper spectrum limit (kold1972, 5 GeV)",D,-0.00 % (20 g/cm2),"analytic, up to 10 GeV"
+"Upper spectrum limit (kold1989, 5 GeV)",D,0.00 % (20 g/cm2),"analytic, up to 10 GeV"
+"Lower spectrum limit (Koldobskiy, 30 MeV)",D,0 % for primaries,E_th >= 50 MeV for all shields
+Shield stopping power PSTAR/Geant4 (+-2 %),D/D_Al,<= 7.1 %,analytic CSDA
+Digitisation of the NASA curves,reference,"<= 2.3 % (0), <= 0.3 % (elsewhere)",+ reading on a log axis ~1-2 %

@@ -1,0 +1,10 @@
+# Exact versions used for the paper (Python 3.9.6, macOS arm64).
+# Simulations
+opengate==10.0.0        # GATE 10, bundles Geant4 11.2.p01 (opengate-core 10.0.0)
+# Analysis
+numpy==1.26.4
+matplotlib==3.9.4
+uproot==5.6.9           # reading the ROOT phase-space files
+awkward==2.8.12         # used by uproot
+itk==5.4.7              # validation/compare_pstar.py and validation/entrance.py only
+# Tests (optional): pytest
