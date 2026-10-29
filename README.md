@@ -12,7 +12,8 @@ The code uses [GATE 10](https://github.com/OpenGATE/opengate) (opengate 10.0.0, 
 - the NASA code-comparison benchmark (Webber 1956 SPE, 20 g/cm² Al; Heinbockel et al., NASA/TP-2009-215560);
 - a comparison of seven shield materials (PE, PMMA, Al, Ti, Fe, Cu, Pb) at 5, 10 and 20 g/cm² for five SPE spectra: the classical Webber 1956 and King 1972 fits and the Koldobskiy et al. (2021) reconstructions of February 1956, August 1972 and September–October 1989;
 - an analytic CSDA transmission-threshold model and an EM-only/full-physics decomposition;
-- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to all 58 ground-level enhancements (GLEs) since 1956.
+- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to all 58 ground-level enhancements (GLEs) since 1956;
+- a comparison with the deterministic code HZETRN (NASA OLTARIS) for the same slabs and four spectra, including the Tylka et al. reconstruction of October 1989.
 
 ## A note for GATE 10 users: `spectrum_histogram` weights
 
@@ -34,7 +35,7 @@ pip install pytest
 pytest
 ```
 
-The tests (about 3 s, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 5 of the paper). They run on every push (GitHub Actions).
+The tests (a few seconds, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 5 of the paper) and the comparison with OLTARIS. They run on every push (GitHub Actions).
 
 ## Repository layout
 
@@ -51,6 +52,7 @@ validation/                150 MeV analysis (PSTAR comparison, seed statistics, 
 analysis/                  paper analyses, figures and their CSV outputs
 analysis/response_matrix.npz   the response matrix (see below)
 benchmark/                 digitised NASA/TP-2009-215560 curves (WebPlotDigitizer)
+oltaris/                   HZETRN results from OLTARIS (TARIS 5.01) for Al, PE and Pb slabs (see analysis/oltaris_compare.py)
 pstar/                     NIST PSTAR tables for the Geant4 materials
 figures/                   paper figures (PDF)
 tests/                     pytest checks of the spectra, the response matrix and the paper tables
@@ -90,6 +92,7 @@ python analysis/gle_rule.py
 python analysis/spectral_uncertainty.py    # 68 % envelope of the reconstructed spectra
 python analysis/iso_test.py               # isotropic vs normal incidence (after run_iso_test.sh)
 python analysis/alpha_contribution.py     # SPE alpha particles relative to protons (after run_set6_alpha.sh)
+python analysis/oltaris_compare.py        # GATE vs HZETRN (OLTARIS) and Tylka vs Koldobskiy for October 1989
 python analysis/make_figures.py; python analysis/make_fig_geometry.py; python analysis/fig_response.py
 ```
 

@@ -1,0 +1,16 @@
+C	Dose Equivalent (mSv) vs. Depth (cm)
+C	Created on Wed Oct 28 13:04:27 2026
+C	Job Name: job_1
+C	TARIS FORTRAN code version 5.01
+
+C	 axis name= Depth unit= cm
+C	 Depth array dimensions and data
+       1       8
+              0         1.8525          3.705         7.4101         7.7101
+        12.4101        17.4101        37.4101
+
+
+C	 array dimensions and data
+       1       8
+ 2.4989920e+17  5.0356750e+09  1.4452190e+09  3.8513550e+08  4.1983970e+08
+ 2.2516690e+08  1.4047080e+08  3.3495580e+07 

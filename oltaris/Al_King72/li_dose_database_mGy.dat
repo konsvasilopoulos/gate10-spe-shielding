@@ -1,0 +1,16 @@
+C	Dose (mGy) vs. Depth (cm)
+C	Created on Tue Oct 27 08:18:16 2026
+C	Job Name: Al_test
+C	TARIS FORTRAN code version 5.01
+
+C	 axis name= Depth unit= cm
+C	 Depth array dimensions and data
+       1       8
+              0         1.8525          3.705         7.4101         7.7101
+        12.4101        17.4101        37.4101
+
+
+C	 array dimensions and data
+       1       8
+ 2.3517760e+05  5.3897350e+03  1.3546180e+03  1.8413560e+02  1.7658270e+02
+ 6.7773130e+01  2.9374020e+01  3.8832240e+00 

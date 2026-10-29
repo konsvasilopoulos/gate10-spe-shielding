@@ -1,0 +1,18 @@
+quantity,Tylka_OLTARIS,Koldobskiy_GLE43-45,ratio
+Phi(>30 MeV) cm^-2,4.167e+09,1.771e+09,2.353
+Phi(>60 MeV) cm^-2,1.222e+09,8.285e+08,1.475
+Phi(>100 MeV) cm^-2,4.477e+08,3.717e+08,1.205
+Phi(>200 MeV) cm^-2,9.255e+07,8.494e+07,1.09
+Phi(>500 MeV) cm^-2,6.756e+06,7.532e+06,0.897
+Phi(>1000 MeV) cm^-2,6.689e+05,9.706e+05,0.689
+Phi(>2000 MeV) cm^-2,3.344e+04,7.902e+04,0.423
+BFO behind 20 g/cm2 Al (mGy-Eq),243.4,219.7,1.108
+min areal density Al for 250 mGy-Eq (g/cm2),19.7,18.3,
+BFO behind 20 g/cm2 POLYETHYLENE (mGy-Eq),156.9,143.2,1.095
+min areal density POLYETHYLENE for 250 mGy-Eq (g/cm2),14.8,13.6,
+BFO behind 20 g/cm2 Pb (mGy-Eq),431.4,378.8,1.139
+min areal density Pb for 250 mGy-Eq (g/cm2),31.1,28.7,
+"POLYETHYLENE/Al D BFO, 20 g/cm2",0.644,0.652,0.989
+"POLYETHYLENE/Al D mean, 20 g/cm2",0.67,0.679,0.986
+"Pb/Al D BFO, 20 g/cm2",1.772,1.724,1.028
+"Pb/Al D mean, 20 g/cm2",1.682,1.642,1.025
