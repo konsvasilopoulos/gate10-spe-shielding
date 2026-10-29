@@ -35,7 +35,7 @@ pip install pytest
 pytest
 ```
 
-The tests (a few seconds, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 5 of the paper) and the comparison with OLTARIS. They run on every push (GitHub Actions).
+The tests (a few seconds, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 6 of the paper) and the comparison with OLTARIS (Table 5). They run on every push (GitHub Actions).
 
 ## Repository layout
 
@@ -84,7 +84,7 @@ Analyses and figures (from the CSV summaries):
 python analysis/thresholds_pstar.py        # analytic threshold model vs GATE
 python analysis/uncertainty_budget.py
 python analysis/nasa_limits.py             # NASA-STD-3001 30-day limits (direct runs, 5-20 g/cm2)
-python analysis/nasa_limits_thick.py       # same with the response matrix, 5-40 g/cm2 (Table 5)
+python analysis/nasa_limits_thick.py       # same with the response matrix, 5-40 g/cm2 (Table 6)
 python analysis/fold_spectra.py crossval   # group folding; predict1989 / check1989 / scan
 python analysis/response_matrix.py validate
 python analysis/response_matrix.py scan    # all 58 GLEs -> analysis/rm_gle_scan.csv

@@ -68,7 +68,7 @@ def test_mean_dose_equivalent_within_paper_bounds():
 
 
 def test_nasa_limit_table():
-    # Table 5: minimum areal density for BFO < 250 mGy-Eq (RBE 1.5), recomputed from the matrix
+    # Table 6: minimum areal density for BFO < 250 mGy-Eq (RBE 1.5), recomputed from the matrix
     import nasa_limits_thick as nl
     with open("analysis/nasa_limits_thick.csv") as f:
         stored = {(r["spectrum"], r["material"]): r for r in csv.DictReader(f)}
