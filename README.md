@@ -75,6 +75,7 @@ Run times are for 4 cores of an Apple M5; set `JOBS` to the number of fast cores
 | SPE alpha particles (Al, PE, Pb, 5-20 g/cm2) | `bash run_set6_alpha.sh`, then `python analysis/alpha_contribution.py` | ~2.2 h |
 | Isotropic-incidence test (Al, PE, Pb at 20 g/cm2) | `bash run_iso_test.sh`, then `python analysis/iso_test.py` | ~1.5 h |
 | Lateral-size and layered-shield tests | `bash run_quick_tests.sh`, then `python analysis/quick_tests.py` | ~35 min |
+| Comparisons with external references repeated with GATE 10.1.1 | `bash run_release_benchmark.sh`, then `python analysis/release_benchmark.py` | ~2.5 h |
 | Release check with GATE 10.1.1 / Geant4 11.4.2 (separate environment) | `bash run_release_check.sh`, then `python validation/seed_stats.py runs_gate101` (results: `analysis/release_check.csv`) | ~1.5 h |
 
 After each material set: `python compare_materials_spe.py spe_runs/materials_<spectrum>` (Webber: `spe_runs/materials`).
