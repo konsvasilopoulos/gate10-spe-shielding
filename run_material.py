@@ -4,6 +4,47 @@ import json
 import argparse
 import opengate as gate
 
+# --- filters: opengate 10.0.x uses sim.add_filter(...); opengate >= 10.1 composes filters ---
+try:
+    from opengate.actors.filters import GateFilterBuilder as _GFB      # opengate >= 10.1
+except ImportError:
+    _GFB = None
+
+
+def filter_particle_energy(sim, actor, tag, particle, emin, emax):
+    """Accept steps of one particle with pre-step kinetic energy in [emin, emax]."""
+    if _GFB is not None:
+        F = _GFB()
+        actor.filter = (F.ParticleName == particle) & (F.KineticEnergy >= emin) & (F.KineticEnergy <= emax)
+        return
+    fp = sim.add_filter("ParticleFilter", f"fp_{tag}")
+    fp.particle = particle
+    fe = sim.add_filter("KineticEnergyFilter", f"fe_{tag}")
+    fe.energy_min = emin
+    fe.energy_max = emax
+    actor.filters.append(fp)
+    actor.filters.append(fe)
+    actor.filters_boolean_operator = "and"
+
+
+def filter_particles(sim, actor, tag, names, reject=False):
+    """Accept steps of any of the particles (reject=False) or of none of them (reject=True)."""
+    if _GFB is not None:
+        F = _GFB()
+        f = None
+        for nm in names:
+            g = (F.ParticleName != nm) if reject else (F.ParticleName == nm)
+            f = g if f is None else ((f & g) if reject else (f | g))
+        actor.filter = f
+        return
+    for nm in names:
+        f = sim.add_filter("ParticleFilter", f"f{'x' if reject else ''}_{tag}_{nm}")
+        f.particle = nm
+        if reject:
+            f.policy = "reject"
+        actor.filters.append(f)
+    actor.filters_boolean_operator = "and" if reject else "or"
+
 # Usage:
 #   python run_material.py G4_Al                  -> total dose + phase space + setup.json (cut 0.1 mm)
 #   python run_material.py G4_Al --split          -> + dose per particle type
@@ -152,11 +193,7 @@ def main():
             a.dose.active = True
             a.output_filename = f"dose_{mat}_{tag}.mhd"
             # one ParticleFilter per particle, combined with "or" (the filter takes a single name)
-            for nm in names:
-                f = sim.add_filter("ParticleFilter", f"f_{tag}_{nm}")
-                f.particle = nm
-                a.filters.append(f)
-            a.filters_boolean_operator = "or"
+            filter_particles(sim, a, tag, names)
 
     sim.run()
 

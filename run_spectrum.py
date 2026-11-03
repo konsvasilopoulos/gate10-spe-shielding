@@ -4,6 +4,47 @@ import json
 import argparse
 import numpy as np
 import opengate as gate
+
+# --- filters: opengate 10.0.x uses sim.add_filter(...); opengate >= 10.1 composes filters ---
+try:
+    from opengate.actors.filters import GateFilterBuilder as _GFB      # opengate >= 10.1
+except ImportError:
+    _GFB = None
+
+
+def filter_particle_energy(sim, actor, tag, particle, emin, emax):
+    """Accept steps of one particle with pre-step kinetic energy in [emin, emax]."""
+    if _GFB is not None:
+        F = _GFB()
+        actor.filter = (F.ParticleName == particle) & (F.KineticEnergy >= emin) & (F.KineticEnergy <= emax)
+        return
+    fp = sim.add_filter("ParticleFilter", f"fp_{tag}")
+    fp.particle = particle
+    fe = sim.add_filter("KineticEnergyFilter", f"fe_{tag}")
+    fe.energy_min = emin
+    fe.energy_max = emax
+    actor.filters.append(fp)
+    actor.filters.append(fe)
+    actor.filters_boolean_operator = "and"
+
+
+def filter_particles(sim, actor, tag, names, reject=False):
+    """Accept steps of any of the particles (reject=False) or of none of them (reject=True)."""
+    if _GFB is not None:
+        F = _GFB()
+        f = None
+        for nm in names:
+            g = (F.ParticleName != nm) if reject else (F.ParticleName == nm)
+            f = g if f is None else ((f & g) if reject else (f | g))
+        actor.filter = f
+        return
+    for nm in names:
+        f = sim.add_filter("ParticleFilter", f"f{'x' if reject else ''}_{tag}_{nm}")
+        f.particle = nm
+        if reject:
+            f.policy = "reject"
+        actor.filters.append(f)
+    actor.filters_boolean_operator = "and" if reject else "or"
 from spectra import spectrum_bins
 
 # =============================================================================
@@ -69,21 +110,9 @@ def add_let_actors(sim, mat, nz, dz, cm, mm, MeV):
         for lo, hi in zip(edges[:-1], edges[1:]):
             tag = f"let_{part}_{lo:g}-{hi:g}MeV"
             a = _let_actor(sim, tag, nz, dz, cm, mm)
-            fp = sim.add_filter("ParticleFilter", f"fp_{tag}")
-            fp.particle = part
-            fe = sim.add_filter("KineticEnergyFilter", f"fe_{tag}")
-            fe.energy_min = lo * MeV
-            fe.energy_max = hi * MeV
-            a.filters.append(fp)
-            a.filters.append(fe)
-            a.filters_boolean_operator = "and"
+            filter_particle_energy(sim, a, tag, part, lo * MeV, hi * MeV)
     a = _let_actor(sim, "let_rest_all", nz, dz, cm, mm)
-    for nm in LET_REST_EXCLUDE:
-        f = sim.add_filter("ParticleFilter", f"fx_rest_{nm}")
-        f.particle = nm
-        f.policy = "reject"
-        a.filters.append(f)
-    a.filters_boolean_operator = "and"
+    filter_particles(sim, a, "rest", LET_REST_EXCLUDE, reject=True)
 
 
 def main():
@@ -251,11 +280,7 @@ def main():
             a.output_filename = f"dose_{mat}_{tag}.mhd"
             # ParticleFilter takes ONE particle name. For a group (gamma, e-, e+) use one filter
             # per particle, combined with "or" (a list matches nothing).
-            for nm in names:
-                f = sim.add_filter("ParticleFilter", f"f_{tag}_{nm}")
-                f.particle = nm
-                a.filters.append(f)
-            a.filters_boolean_operator = "or"
+            filter_particles(sim, a, tag, names)
 
     if args.dose_eq:
         add_let_actors(sim, mat, nz, args.dz, cm, mm, MeV)
