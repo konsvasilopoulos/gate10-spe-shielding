@@ -1,0 +1,55 @@
+part,material,quantity,depth,GATE_10.0.0,GATE_10.1.1,ratio
+Kold72 behind 20 g/cm2,POLYETHYLENE,D (cGy),skin 0-0.3,10.8003,10.7896,0.999
+Kold72 behind 20 g/cm2,POLYETHYLENE,H (cSv),skin 0-0.3,14.6848,15.3518,1.0454
+Kold72 behind 20 g/cm2,POLYETHYLENE,D (cGy),5 g/cm2 (BFO),6.7519,6.7394,0.9982
+Kold72 behind 20 g/cm2,POLYETHYLENE,H (cSv),5 g/cm2 (BFO),9.5887,9.7256,1.0143
+Kold72 behind 20 g/cm2,POLYETHYLENE,D (cGy),10 g/cm2,4.4159,4.422,1.0014
+Kold72 behind 20 g/cm2,POLYETHYLENE,H (cSv),10 g/cm2,6.5327,6.6139,1.0124
+Kold72 behind 20 g/cm2,POLYETHYLENE,D (cGy),mean 0-30,3.9008,3.9204,1.005
+Kold72 behind 20 g/cm2,POLYETHYLENE,H (cSv),mean 0-30,5.6522,5.8632,1.0373
+Kold72 behind 20 g/cm2,Al,D (cGy),skin 0-0.3,21.8405,21.9243,1.0038
+Kold72 behind 20 g/cm2,Al,H (cSv),skin 0-0.3,33.901,35.752,1.0546
+Kold72 behind 20 g/cm2,Al,D (cGy),5 g/cm2 (BFO),11.9976,12.0624,1.0054
+Kold72 behind 20 g/cm2,Al,H (cSv),5 g/cm2 (BFO),18.201,18.9695,1.0422
+Kold72 behind 20 g/cm2,Al,D (cGy),10 g/cm2,7.3462,7.3468,1.0001
+Kold72 behind 20 g/cm2,Al,H (cSv),10 g/cm2,11.5384,11.7028,1.0142
+Kold72 behind 20 g/cm2,Al,D (cGy),mean 0-30,6.7362,6.7312,0.9993
+Kold72 behind 20 g/cm2,Al,H (cSv),mean 0-30,10.5074,10.8995,1.0373
+Kold72 behind 20 g/cm2,Pb,D (cGy),skin 0-0.3,59.7264,60.4382,1.0119
+Kold72 behind 20 g/cm2,Pb,H (cSv),skin 0-0.3,100.6086,105.652,1.0501
+Kold72 behind 20 g/cm2,Pb,D (cGy),5 g/cm2 (BFO),24.4304,24.5752,1.0059
+Kold72 behind 20 g/cm2,Pb,H (cSv),5 g/cm2 (BFO),38.429,38.485,1.0015
+Kold72 behind 20 g/cm2,Pb,D (cGy),10 g/cm2,12.832,12.8785,1.0036
+Kold72 behind 20 g/cm2,Pb,H (cSv),10 g/cm2,19.6387,20.1014,1.0236
+Kold72 behind 20 g/cm2,Pb,D (cGy),mean 0-30,13.1659,13.2253,1.0045
+Kold72 behind 20 g/cm2,Pb,H (cSv),mean 0-30,20.722,21.1719,1.0217
+Kold72 ratio to Al,POLYETHYLENE/Al,D,skin 0-0.3,0.4945,0.4921,0.9952
+Kold72 ratio to Al,Pb/Al,D,skin 0-0.3,2.7347,2.7567,1.0081
+Kold72 ratio to Al,POLYETHYLENE/Al,H,skin 0-0.3,0.4332,0.4294,0.9913
+Kold72 ratio to Al,Pb/Al,H,skin 0-0.3,2.9677,2.9551,0.9958
+Kold72 ratio to Al,POLYETHYLENE/Al,D,5 g/cm2 (BFO),0.5628,0.5587,0.9928
+Kold72 ratio to Al,Pb/Al,D,5 g/cm2 (BFO),2.0363,2.0373,1.0005
+Kold72 ratio to Al,POLYETHYLENE/Al,H,5 g/cm2 (BFO),0.5268,0.5127,0.9732
+Kold72 ratio to Al,Pb/Al,H,5 g/cm2 (BFO),2.1114,2.0288,0.9609
+Kold72 ratio to Al,POLYETHYLENE/Al,D,10 g/cm2,0.6011,0.6019,1.0013
+Kold72 ratio to Al,Pb/Al,D,10 g/cm2,1.7467,1.7529,1.0035
+Kold72 ratio to Al,POLYETHYLENE/Al,H,10 g/cm2,0.5662,0.5652,0.9982
+Kold72 ratio to Al,Pb/Al,H,10 g/cm2,1.702,1.7177,1.0092
+Kold72 ratio to Al,POLYETHYLENE/Al,D,mean 0-30,0.5791,0.5824,1.0058
+Kold72 ratio to Al,Pb/Al,D,mean 0-30,1.9545,1.9648,1.0053
+Kold72 ratio to Al,POLYETHYLENE/Al,H,mean 0-30,0.5379,0.5379,1.0
+Kold72 ratio to Al,Pb/Al,H,mean 0-30,1.9721,1.9425,0.985
+"150 MeV, seed 1234",G4_Al,E_out (MeV),,125.473,125.471,0.99998
+"150 MeV, seed 1234",G4_Al,dR80 (mm),,42.622,42.464,-0.158
+"150 MeV, seed 1234",G4_Cu,E_out (MeV),,114.219,114.203,0.99986
+"150 MeV, seed 1234",G4_Cu,dR80 (mm),,60.516,60.398,-0.118
+"150 MeV, seed 1234",G4_Fe,E_out (MeV),,114.007,114.008,1.00001
+"150 MeV, seed 1234",G4_Fe,dR80 (mm),,60.788,60.679,-0.11
+"150 MeV, seed 1234",G4_PLEXIGLASS,E_out (MeV),,122.902,122.896,0.99995
+"150 MeV, seed 1234",G4_PLEXIGLASS,dR80 (mm),,46.72,46.573,-0.146
+"150 MeV, seed 1234",G4_POLYETHYLENE,E_out (MeV),,138.741,138.741,1.0
+"150 MeV, seed 1234",G4_POLYETHYLENE,dR80 (mm),,20.278,20.048,-0.23
+"150 MeV, seed 1234",G4_Pb,E_out (MeV),,137.214,137.216,1.00001
+"150 MeV, seed 1234",G4_Pb,dR80 (mm),,23.179,22.957,-0.222
+"150 MeV, seed 1234",G4_Ti,E_out (MeV),,111.197,111.199,1.00003
+"150 MeV, seed 1234",G4_Ti,dR80 (mm),,64.995,64.938,-0.057
