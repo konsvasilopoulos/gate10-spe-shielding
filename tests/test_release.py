@@ -8,7 +8,7 @@ def test_absorbed_dose_independent_of_release():
     old = {(r["spectrum"], r["material"], r["point"]): float(r["GATE_D_mGy"]) for r in rows if r["version"] == "v10.0.0"}
     new = {(r["spectrum"], r["material"], r["point"]): float(r["GATE_D_mGy"]) for r in rows if r["version"] == "v10.1.1"}
     for k, v in old.items():
-        if k[3] in ("entrance", "0.3", "5 (BFO)"):
+        if k[2] in ("entrance", "0.3", "5 (BFO)"):
             assert abs(new[k] / v - 1) < 0.025, k
 
 
