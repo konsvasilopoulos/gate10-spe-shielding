@@ -1,5 +1,10 @@
 """oltaris_larc.py - The OLTARIS historical spectra "Feb 1956 (LaRC)" and "Aug 1972 (LaRC)" as alternative
 reconstructions of the February 1956 and August 1972 events.
+Source (OLTARIS team, personal communication, Nov 2026): Wilson & Denn 1976, NASA TN D-8290, with differential
+fluences (cm-2 MeV-1, E in MeV)
+  Feb 1956 (LaRC): f(E) = 1.5e9 exp(-(E-10)/25)/25 + 3e8 exp(-(E-100)/320)/320
+  Aug 1972 (LaRC): f(E) = 2.2e7 exp(-(E-100)/30)
+(larc_differential below; tests/test_oltaris.py checks that the saved boundary fluxes follow them).
 
 OLTARIS runs (TARIS 5.01, 12 Nov 2026): Al slab 5 + 5 + 10 g/cm2 followed by water 0.3 + 4.7 + 5 + 20 g/cm2, as in
 oltaris_compare.py, with "Save external differential flux" = Yes -> oltaris/Al_LaRC56/, oltaris/Al_LaRC72/.
@@ -20,6 +25,16 @@ from oltaris_compare import read_table, POINTS, BAD, gate_point
 
 ETH = {(r["material"], int(float(r["areal_g_cm2"]))): float(r["E_th_MeV"])
        for r in csv.DictReader(open("analysis/thresholds_pstar.csv"))}
+
+
+def larc_differential(tag, E):
+    """Differential proton fluence (cm-2 MeV-1) of the OLTARIS LaRC spectra (Wilson & Denn 1976)."""
+    E = np.asarray(E, float)
+    if tag == "LaRC56":
+        return 1.5e9 * np.exp(-(E - 10) / 25) / 25 + 3e8 * np.exp(-(E - 100) / 320) / 320
+    if tag == "LaRC72":
+        return 2.2e7 * np.exp(-(E - 100) / 30)
+    raise ValueError(tag)
 
 
 def flux_integral(tag):

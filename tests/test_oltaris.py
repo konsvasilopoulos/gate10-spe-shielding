@@ -37,3 +37,23 @@ def test_material_ratios_at_bfo():
         r = rows[(sp, "20 + water 5 (BFO)")]
         assert abs(float(r["PE_Al_D_GATE"]) - float(r["PE_Al_D_OLTARIS"])) < 0.02
         assert abs(float(r["Pb_Al_D_GATE"]) - float(r["Pb_Al_D_OLTARIS"])) < 0.02
+
+
+@pytest.mark.parametrize("tag", ["LaRC56", "LaRC72"])
+def test_larc_boundary_flux_matches_wilson_denn(tag):
+    """The boundary fluxes saved by OLTARIS follow the LaRC formulas (Wilson & Denn 1976)."""
+    import oltaris_larc as ol
+    E, phi, parts = oc.read_table(f"oltaris/Al_{tag}/li_flux.dat")
+    p = phi[parts.index("proton")]
+    m = p > 1e-20                      # OLTARIS writes 1e-20 where the fluence underflows
+    assert m.sum() > 90
+    np.testing.assert_allclose(p[m], ol.larc_differential(tag, E[m]), rtol=1e-5)
+
+
+def test_larc_integral_fluence():
+    """Integral of the tabulated flux (log-log interpolation on the OLTARIS grid) against the analytic value;
+    the interpolation lies slightly below a pure exponential, by 0.4 % at 100 MeV for the 1972 fit."""
+    import oltaris_larc as ol
+    F56, _ = ol.flux_integral("LaRC56"); F72, _ = ol.flux_integral("LaRC72")
+    assert F56(100) == pytest.approx(1.5e9 * np.exp(-90 / 25) + 3e8, rel=2e-3)
+    assert F72(100) == pytest.approx(6.6e8, rel=5e-3)
