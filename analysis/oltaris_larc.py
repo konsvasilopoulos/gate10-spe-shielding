@@ -7,7 +7,8 @@ The boundary proton spectrum (li_flux.dat) is folded with the GATE response matr
   (a) HZETRN for the same Al slab (D and H at all interfaces),
   (b) the spectra of the article (Webber and Koldobskiy GLE 5 for 1956; King and Koldobskiy GLE 24+25 for 1972):
       integral fluence, slope gamma near the thresholds, ratios to Al, threshold rule, BFO limit.
-Usage (from the repository root):  python analysis/oltaris_larc.py  -> analysis/oltaris_larc.csv
+Usage (from the repository root):  python analysis/oltaris_larc.py
+  -> analysis/oltaris_larc.csv (one row per spectrum), analysis/oltaris_larc_hzetrn.csv (GATE vs HZETRN, Al slab)
 """
 import os, sys, csv
 import numpy as np
@@ -35,7 +36,10 @@ def gam(F, E): return float(-(np.log(F(E * 1.05)) - np.log(F(E / 1.05))) / np.lo
 
 
 def main():
-    rows = [["section", "spectrum", "quantity", "value"]]
+    hz = [["spectrum", "point", "GATE_D_mGy", "HZETRN_D_mGy", "D_ratio", "GATE_H_mSv", "HZETRN_H_mSv", "H_ratio"]]
+    rows = [["spectrum", "Phi_gt30", "Phi_gt100", "Phi_gt300", "Phi_gt1000", "gamma_150MeV", "gamma_Estar_PE5", "gamma_Estar_PE10",
+             "gamma_Estar_PE20", "PE_Al_mean_D_5", "PE_Al_mean_D_10", "PE_Al_mean_D_20", "Pb_Al_mean_D_20", "rule_PE_Al_20",
+             "PE_Al_BFO_D_20", "BFO_Al20_mGyEq", "min_areal_Al", "min_areal_PE", "min_areal_Pb"]]
     L56, e56 = flux_integral("LaRC56"); L72, e72 = flux_integral("LaRC72")
     groups = {"1956": [("LaRC", L56), ("Webber", SPECTRA["webber1956"]), ("K21", SPECTRA["kold1956"])],
               "1972": [("LaRC", L72), ("King", SPECTRA["king1972"]), ("K21", SPECTRA["kold1972"])]}
@@ -47,20 +51,18 @@ def main():
         for lab, t, win, i in POINTS:
             gD, gH = gate_point(F, "Al", t, "D", win), gate_point(F, "Al", t, "H", win)
             print(f"  {ev} {lab:<20} D {gD:9.2f} / {oD[i]:9.2f} = {gD / oD[i]:.3f}   H {gH:9.2f} / {oH[i]:9.2f} = {gH / oH[i]:.3f}")
-            rows += [["hzetrn", f"{ev} LaRC", f"{lab} D GATE/HZETRN mGy", f"{gD:.4g}/{oD[i]:.4g}"],
-                     ["hzetrn", f"{ev} LaRC", f"{lab} H GATE/HZETRN mSv", f"{gH:.4g}/{oH[i]:.4g}"]]
+            hz.append([f"{ev} LaRC", lab, round(gD, 4), round(oD[i], 4), round(gD / oD[i], 3), round(gH, 4), round(oH[i], 4), round(gH / oH[i], 3)])
 
     print("\n(b) Spectra through the GATE response matrix")
     for ev, lst in groups.items():
         print(f"  --- {ev}")
         print(f"  {'':<8}" + "".join(f"{h:>10}" for h in ("F>30", "F>100", "F>300", "F>1000", "g(150)", "gPE5", "gPE10", "gPE20")))
+        spec = {}
         for name, F in lst:
             g = [gam(F, np.sqrt(ETH[("Al", t)] * ETH[("POLYETHYLENE", t)])) for t in (5, 10, 20)]
             vals = [float(F(e)) for e in (30, 100, 300, 1000)]
             print(f"  {name:<8}" + "".join(f"{v:>10.3g}" for v in vals) + f"{gam(F, 150):>10.2f}" + "".join(f"{x:>10.2f}" for x in g))
-            for e, v in zip((30, 100, 300, 1000), vals): rows.append(["spectrum", f"{ev} {name}", f"Phi(>{e} MeV) cm-2", f"{v:.4g}"])
-            rows.append(["spectrum", f"{ev} {name}", "gamma(150 MeV)", round(gam(F, 150), 3)])
-            for t, x in zip((5, 10, 20), g): rows.append(["spectrum", f"{ev} {name}", f"gamma at E* PE {t}", round(x, 3)])
+            spec[name] = [f"{v:.4g}" for v in vals] + [round(gam(F, 150), 3)] + [round(x, 3) for x in g]
         print(f"  {'':<8}" + "".join(f"{h:>13}" for h in ("PE/Al 5", "PE/Al 10", "PE/Al 20", "Pb/Al 20", "rule PE 20", "PE/Al BFO20", "Al20 BFO", "min Al", "min PE", "min Pb")))
         for name, F in lst:
             r = [rm.fold(F, "POLYETHYLENE", t, "D", "mean") / rm.fold(F, "Al", t, "D", "mean") for t in (5, 10, 20)]
@@ -70,13 +72,12 @@ def main():
             bal = 1.5 * 10 * rm.fold(F, "Al", 20, "D", "BFO")
             mins = [nl.tmin([1.5 * 10 * rm.fold(F, m, t, "D", "BFO") for t in nl.T]) for m in ("Al", "POLYETHYLENE", "Pb")]
             print(f"  {name:<8}" + "".join(f"{v:>13.3f}" for v in r + [pb, rule, bfo]) + f"{bal:>13.1f}" + "".join(f"{m:>13}" for m in mins))
-            for t, v in zip((5, 10, 20), r): rows.append(["fold", f"{ev} {name}", f"PE/Al mean D {t}", round(v, 3)])
-            rows += [["fold", f"{ev} {name}", "Pb/Al mean D 20", round(pb, 3)], ["fold", f"{ev} {name}", "rule PE/Al 20", round(rule, 3)],
-                     ["fold", f"{ev} {name}", "PE/Al BFO D 20", round(bfo, 3)], ["fold", f"{ev} {name}", "BFO Al 20 mGy-Eq", round(bal, 1)]]
-            for m, v in zip(("Al", "PE", "Pb"), mins): rows.append(["fold", f"{ev} {name}", f"min areal {m} g/cm2", v])
+            rows.append([f"{ev} {name}"] + spec[name] + [round(v, 3) for v in r + [pb, rule, bfo]] + [round(bal, 1)] + mins)
     with open("analysis/oltaris_larc.csv", "w", newline="") as fo:
         csv.writer(fo).writerows(rows)
-    print("\nWritten: analysis/oltaris_larc.csv")
+    with open("analysis/oltaris_larc_hzetrn.csv", "w", newline="") as fo:
+        csv.writer(fo).writerows(hz)
+    print("\nWritten: analysis/oltaris_larc.csv, analysis/oltaris_larc_hzetrn.csv")
 
 
 if __name__ == "__main__":
