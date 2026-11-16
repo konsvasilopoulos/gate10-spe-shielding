@@ -137,6 +137,12 @@ def main():
     ap.add_argument("--particle", default="proton", choices=["proton", "alpha"],
                     help="source particle. For alpha, --emin/--emax and the spectrum are per nucleon (MeV/n); the group "
                          "fluence is the proton fluence at the same MeV/n (He/H = 1, scaled afterwards)")
+    ap.add_argument("--no-neutron-hadronic", action="store_true",
+                    help="inactivate all hadronic processes of neutrons (elastic, inelastic, capture): neutrons leave "
+                         "without depositing energy -> dose without the neutron contribution")
+    ap.add_argument("--mt", action="store_true",
+                    help="run Geant4 in MT mode with one thread: each event gets its own seed, so two runs with the "
+                         "same --seed are correlated (identical events where no neutron interacts)")
     ap.add_argument("--theta-deg", type=float, default=0.0,
                     help="incidence angle to the z axis (degrees). The source is shifted and widened along x so that the "
                          "central 30x30 cm2 column receives a uniform fluence (isotropic-incidence test)")
@@ -176,6 +182,13 @@ def main():
     sim = gate.Simulation()
     sim.output_dir = args.out
     sim.random_seed = args.seed
+    if args.mt:
+        sim.number_of_threads = 1
+        sim.force_multithread_mode = True
+    if args.no_neutron_hadronic:
+        sim.g4_commands_after_init.append("/process/inactivate Hadronic neutron")
+        sim.g4_commands_after_init.append("/particle/select neutron")      # for the log: neutron processes
+        sim.g4_commands_after_init.append("/particle/process/dump")        # and whether they are active
 
     world = sim.world
     tan_t = float(np.tan(np.radians(args.theta_deg)))
@@ -297,7 +310,7 @@ def main():
             "source_xy_cm": args.source_xy, "slab_xy_cm": args.slab_xy, "water_xy_cm": args.water_xy,
             "phantom_cm": args.phantom_cm, "dz_mm": args.dz,
             "physics": args.physics, "weights_as_density": True, "seed": args.seed, "cut_mm": args.cut, "split": args.split,
-            "dose_eq": args.dose_eq,
+            "dose_eq": args.dose_eq, "no_neutron_hadronic": args.no_neutron_hadronic, "mt": args.mt,
         }, fo, indent=1)
     print(f"--> Done: {mat} {args.areal} g/cm2 ({thick:.3f} cm), "
           f"group {args.emin}-{args.emax} MeV, Phi = {group_fluence:.3e} cm^-2")
