@@ -57,3 +57,14 @@ def test_larc_integral_fluence():
     F56, _ = ol.flux_integral("LaRC56"); F72, _ = ol.flux_integral("LaRC72")
     assert F56(100) == pytest.approx(1.5e9 * np.exp(-90 / 25) + 3e8, rel=2e-3)
     assert F72(100) == pytest.approx(6.6e8, rel=5e-3)
+
+
+def test_rbe_check_hzetrn():
+    """Particle-specific RBE (NCRP 132) changes the HZETRN BFO dose by less than 2 % for every case."""
+    import rbe_check as rc
+    for lab, tags in rc.CASES:
+        for mat in ("Al", "PE", "Pb"):
+            g = rc.shares(mat, tags)
+            if g is None: continue
+            assert sum(g.values()) == pytest.approx(1.0, abs=1e-9)
+            assert abs(sum(rc.RBE[k] * g[k] for k in rc.RBE) / 1.5 - 1) < 0.02
