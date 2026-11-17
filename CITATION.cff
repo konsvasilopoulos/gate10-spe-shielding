@@ -11,11 +11,11 @@ license: MIT
 repository-code: "https://github.com/konsvasilopoulos/gate10-spe-shielding"
 preferred-citation:
   type: article
-  title: "Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum"
+  title: "The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study"
   authors:
     - family-names: Vasilopoulos
       given-names: Konstantinos
       orcid: "https://orcid.org/0009-0001-7245-1404"
   journal: "Life Sciences in Space Research"
   year: 2026
-  notes: "Submitted"
+  notes: "Manuscript in preparation"

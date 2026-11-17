@@ -4,7 +4,7 @@
 
 Simulation and analysis code for the article
 
-> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), *Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum*, submitted to Life Sciences in Space Research (2026).
+> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), *The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study*, manuscript in preparation for Life Sciences in Space Research (2026).
 
 The code uses [GATE 10](https://github.com/OpenGATE/opengate) (opengate 10.0.0, Geant4 11.2.p01) to transport solar particle event (SPE) protons through a shield slab into a 30 g/cm² water phantom, and computes absorbed dose and dose equivalent (ICRP 60). It covers:
 
@@ -122,13 +122,17 @@ The raw dose and LET maps (MetaImage) of all runs are archived on Zenodo: DOI to
 
 If you use this code or the response matrix, please cite the article:
 
-> K. Vasilopoulos, Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum, *Life Sciences in Space Research* (submitted, 2026).
+> K. Vasilopoulos, The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study, *Life Sciences in Space Research* (manuscript in preparation, 2026).
 
 and the archived software version:
 
 > K. Vasilopoulos, gate10-spe-shielding (v1.0.0), Zenodo, doi: *to be added at release*.
 
 `CITATION.cff` provides the citation in machine-readable form (GitHub: "Cite this repository").
+
+## Funding
+
+This work was supported by the Andreas Mentzelopoulos Foundation through a doctoral scholarship.
 
 ## Licence
 

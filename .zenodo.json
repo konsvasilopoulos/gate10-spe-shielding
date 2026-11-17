@@ -1,6 +1,6 @@
 {
   "title": "gate10-spe-shielding: GATE 10 simulations of solar particle event shielding",
-  "description": "Simulation and analysis code, response matrix and result tables for the article 'Validation of GATE 10 for solar particle event shielding and the dependence of material effectiveness on the event spectrum'. GATE 10 (opengate 10.0.0, Geant4 11.2.p01) transport of solar particle event protons and alpha particles through seven shield materials into a water phantom; absorbed dose and dose equivalent (ICRP 60); NASA code-comparison benchmark; a response matrix (30 MeV-5 GeV, 5-40 g/cm2) for folding any SPE spectrum.",
+  "description": "Simulation and analysis code, response matrix and result tables for the article 'The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study'. GATE 10 (opengate 10.0.0, Geant4 11.2.p01) transport of solar particle event protons and alpha particles through seven shield materials into a water phantom; absorbed dose and dose equivalent (ICRP 60); NASA code-comparison benchmark; comparison with HZETRN (OLTARIS); a response matrix (30 MeV-5 GeV, 5-40 g/cm2) for folding any SPE spectrum.",
   "upload_type": "software",
   "creators": [
     {
@@ -21,6 +21,8 @@
     "dose equivalent",
     "response matrix",
     "polyethylene",
-    "aluminium"
+    "aluminium",
+    "spectral slope",
+    "ground-level enhancement"
   ]
 }
