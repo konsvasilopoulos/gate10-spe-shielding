@@ -63,8 +63,8 @@ for k, Ff in LARC.items():
 with open("analysis/gle_rule.csv", "w", newline="") as fo:
     w = csv.writer(fo); w.writerow(["event", "material", "areal", "gamma_at_Estar", "rule_ratio", "ratio", "source"]); w.writerows(out)
 # figure
-plt.rcParams.update({"font.size": 9, "savefig.bbox": "tight"})
-fig, ax = plt.subplots(1, 2, figsize=(7.2, 3.3), sharey=True)
+plt.rcParams.update({"font.size": 8, "axes.titlesize": 8, "xtick.labelsize": 7, "ytick.labelsize": 7, "savefig.bbox": "tight"})
+fig, ax = plt.subplots(1, 2, figsize=(7.48, 3.2), sharey=True)
 gg = np.linspace(0.5, 6.5, 100)
 for a, t in zip(ax, (5, 20)):
     for m, c in (("POLYETHYLENE", "C0"), ("Pb", "C3")):
@@ -76,13 +76,13 @@ for a, t in zip(ax, (5, 20)):
             if pts: a.plot(pts[0][3], pts[0][5], mk, mfc="white", mec="k", ms=6, zorder=5)
     a.set_yscale("log"); a.yaxis.set_major_locator(FixedLocator([0.3, 0.5, 0.7, 1, 1.5, 2, 3, 4])); a.yaxis.set_major_formatter(FormatStrFormatter("%g"))
     a.yaxis.set_minor_locator(NullLocator()); a.set_ylim(0.27, 4.2); a.set_xlim(0.4, 6.5); a.axhline(1, color="0.5", lw=0.6); a.grid(alpha=0.3)
-    ea = ETH[("Al", t)]; a.set_xlabel(f"Integral spectral index γ near E_th (≈{ea:.0f} MeV)"); a.set_title(f"{t} g/cm² shield", fontsize=9)
+    ea = ETH[("Al", t)]; a.set_xlabel(f"Integral spectral index γ near E_th (≈{ea:.0f} MeV)"); a.set_title(f"{t} g/cm² shield")
 ax[0].set_ylabel("Mean dose relative to Al")
 from matplotlib.lines import Line2D
 h = [Line2D([], [], ls="", marker=".", color="0.4", ms=7), Line2D([], [], color="0.3", lw=1)] + \
     [Line2D([], [], ls="", marker=mk, mfc="white", mec="k") for mk in ("o", "s", "D", "^", "v", "P", "X")]
-ax[1].legend(h, ["58 GLEs (folded)", "threshold rule", "Feb 1956 K.", "Aug 1972 K.", "Oct 1989 K.", "Webber 1956", "King 1972", "Feb 1956 LaRC", "Aug 1972 LaRC"],
-             frameon=False, fontsize=6.5, loc="center right")
+ax[1].legend(h, ["58 GLEs (folded)", "threshold rule", "Feb 1956 K.", "Aug 1972 K.", "Sep–Oct 1989 K.", "Webber 1956", "King 1972", "Feb 1956 LaRC", "Aug 1972 LaRC"],
+             frameon=False, fontsize=7, loc="center right")
 ax[0].text(0.5, 0.31, "PE (blue), Pb (red)", fontsize=7)
 for a, t in zip(ax, ("(a)", "(b)")): a.text(0.02, 0.93, t, transform=a.transAxes, fontweight="bold")
 fig.tight_layout()

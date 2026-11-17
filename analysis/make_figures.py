@@ -9,8 +9,10 @@ import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator, FormatStrFormatter, NullFormatter, NullLocator
 
-plt.rcParams.update({"font.size": 10, "axes.labelsize": 10, "legend.fontsize": 8, "xtick.labelsize": 9, "ytick.labelsize": 9,
-                     "axes.linewidth": 0.8, "savefig.bbox": "tight"})
+# Sizes are the final print sizes (Elsevier: 190 mm double column, 140 mm 1.5 column); no text below 6.5 pt.
+plt.rcParams.update({"font.size": 8, "axes.labelsize": 8, "axes.titlesize": 8, "legend.fontsize": 7, "xtick.labelsize": 7,
+                     "ytick.labelsize": 7, "axes.linewidth": 0.7, "lines.linewidth": 1.2, "savefig.bbox": "tight"})
+W2, W15 = 7.48, 5.51          # inches: double column (190 mm), 1.5 column (140 mm)
 os.makedirs("figures", exist_ok=True)
 
 def log_ticks(ax, ticks):
@@ -31,17 +33,17 @@ B = "spe_runs/webber1956_Al20_wide_H"
 nasa = np.genfromtxt("benchmark/nasa_tp2009_215560_digitized.csv", delimiter=",", names=True, skip_header=3)
 dd = np.genfromtxt(f"{B}/spe_dose_depth.csv", delimiter=",", names=True)
 he = np.genfromtxt(f"{B}/dose_eq_depth.csv", delimiter=",", names=True)
-fig, ax = plt.subplots(1, 2, figsize=(7.2, 3.2))
+fig, ax = plt.subplots(1, 2, figsize=(W2, 3.0))
 ax[0].plot(dd["depth_g_cm2"], dd["dose_cGy"], "k-", lw=1.4, label="GATE 10 (this work)")
 ax[0].fill_between(dd["depth_g_cm2"], dd["dose_cGy"] - dd["sigma_cGy"], dd["dose_cGy"] + dd["sigma_cGy"], color="k", alpha=0.2, lw=0)
 for k, lab, m in (("dose_FLUKA_cGy", "FLUKA", "o"), ("dose_HETC_cGy", "HETC-HEDS", "s"), ("dose_HZETRN_cGy", "HZETRN", "^")):
-    ax[0].plot(nasa["depth_g_cm2"], nasa[k], m, mfc="none", ms=5, label=lab)
+    ax[0].plot(nasa["depth_g_cm2"], nasa[k], m, mfc="none", ms=4.5, label=lab)
 ax[0].set_ylabel("Absorbed dose (cGy)"); log_ticks(ax[0], [0.4, 0.5, 0.7, 1, 2, 3, 5, 7, 10]); ax[0].set_ylim(0.42, 9)
 Hs = np.convolve(he["H_cSv"], np.ones(21) / 21, mode="same"); ok = (he["depth_g_cm2"] > 1) & (he["depth_g_cm2"] < 29)
 ax[1].plot(he["depth_g_cm2"], he["H_cSv"], "-", color="0.75", lw=0.6, label="GATE 10, 1 mm bins")
 ax[1].plot(he["depth_g_cm2"][ok], Hs[ok], "k-", lw=1.4, label="GATE 10, ±1 g/cm² mean")
 for k, lab, m in (("H_FLUKA_cSv", "FLUKA", "o"), ("H_HETC_corr_cSv", "HETC-HEDS (corr.)", "s"), ("H_HZETRN_cSv", "HZETRN", "^")):
-    ax[1].plot(nasa["depth_g_cm2"], nasa[k], m, mfc="none", ms=5, label=lab)
+    ax[1].plot(nasa["depth_g_cm2"], nasa[k], m, mfc="none", ms=4.5, label=lab)
 ax[1].set_ylabel("Dose equivalent (cSv)"); log_ticks(ax[1], [0.7, 1, 2, 3, 5, 7, 10, 15]); ax[1].set_ylim(0.65, 14)
 for a, t in zip(ax, ("(a)", "(b)")):
     a.set_xlabel("Depth in water (g/cm²)"); a.set_xlim(-0.5, 30.5); a.grid(alpha=0.3); a.legend(frameon=False)
@@ -49,8 +51,8 @@ for a, t in zip(ax, ("(a)", "(b)")):
 save(fig, "benchmark_D_H")
 
 # ---------------- materials ----------------
-SP = [("kold1956", "Feb 1956 — Koldobskiy et al. (2021)", "spe_runs/materials_kold1956"),
-      ("kold1972", "Aug 1972 — Koldobskiy et al. (2021)", "spe_runs/materials_kold1972"),
+SP = [("kold1956", "Feb 1956 — Koldobskiy", "spe_runs/materials_kold1956"),
+      ("kold1972", "Aug 1972 — Koldobskiy", "spe_runs/materials_kold1972"),
       ("webber1956", "Feb 1956 — Webber", "spe_runs/materials"),
       ("king1972", "Aug 1972 — King", "spe_runs/materials_king1972"),
       ("kold1989", "Sep–Oct 1989 — Koldobskiy", "spe_runs/materials_kold1989")]
@@ -64,7 +66,7 @@ def load(base):
 data = {k: load(b) for k, _, b in SP}
 RT = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1, 1.25, 1.5, 2, 3, 4]
 ncol = 3 if len(SP) > 4 else 2
-fig, axs = plt.subplots(2, ncol, figsize=(3.6 * ncol, 6.0), sharex=True, sharey=True)
+fig, axs = plt.subplots(2, ncol, figsize=(W2, 4.9), sharex=True, sharey=True)
 order = ["kold1956", "kold1972", "kold1989", "webber1956", "king1972"] if ncol == 3 else ["kold1956", "kold1972", "webber1956", "king1972"]
 SP = sorted(SP, key=lambda s_: order.index(s_[0]))
 cols = ["#1b9e77", "#d95f02", "#7570b3"]
@@ -73,11 +75,11 @@ for a, (k, lab, _), t in zip(axs.flat, SP, ("(a)", "(b)", "(c)", "(d)", "(e)")):
     for j, ar in enumerate(AR):
         D = [data[k][(m, ar)][0] / data[k][("Al", ar)][0] for m in MATS]
         H = [data[k][(m, ar)][1] / data[k][("Al", ar)][1] for m in MATS]
-        a.plot(x, H, "-o", color=cols[j], ms=4, lw=1.2, label=f"{ar} g/cm², H")
+        a.plot(x, H, "-o", color=cols[j], ms=3.5, lw=1.1, label=f"{ar} g/cm², H")
         a.plot(x, D, "--", color=cols[j], lw=1, label=f"{ar} g/cm², D")
     a.axhline(1, color="0.5", lw=0.7); a.set_xticks(x); a.set_xticklabels([LAB.get(m, m) for m in MATS])
     log_ticks(a, RT); a.set_ylim(0.27, 3.8); a.grid(alpha=0.3)
-    a.set_title(lab, fontsize=9); a.text(0.03, 0.92, t, transform=a.transAxes, fontweight="bold")
+    a.set_title(lab); a.text(0.03, 0.92, t, transform=a.transAxes, fontweight="bold")
 for a in axs[:, 0]: a.set_ylabel("Ratio to Al (mean, 0–30 g/cm² water)")
 axs[0, 0].legend(frameon=False, ncol=1, loc="lower right")
 for i_, a in enumerate(list(axs.flat)[len(SP):]):
@@ -85,14 +87,14 @@ for i_, a in enumerate(list(axs.flat)[len(SP):]):
 for a in axs[1, :]: a.tick_params(labelbottom=True)
 fig.tight_layout(); save(fig, "materials_ratio_4spectra")
 
-fig, ax = plt.subplots(figsize=(4.8, 3.6))
+fig, ax = plt.subplots(figsize=(4.6, 3.1))
 styles = {"kold1956": "C0", "kold1972": "C1", "webber1956": "C2", "king1972": "C3", "kold1989": "C4"}
 for k, lab, _ in SP:
     ax.plot(AR, [data[k][("POLYETHYLENE", t)][0] / data[k][("Al", t)][0] for t in AR], "-o", color=styles[k], ms=4, label=f"PE, {lab}")
     ax.plot(AR, [data[k][("Pb", t)][0] / data[k][("Al", t)][0] for t in AR], "--s", color=styles[k], ms=4, label=f"Pb, {lab}")
 ax.axhline(1, color="0.5", lw=0.7); log_ticks(ax, RT); ax.set_ylim(0.27, 3.8); ax.set_xticks(AR)
 ax.set_xlabel("Shield areal density (g/cm²)"); ax.set_ylabel("Mean dose relative to Al"); ax.grid(alpha=0.3)
-ax.legend(frameon=False, fontsize=6.5, ncol=1, loc="center left", bbox_to_anchor=(1.01, 0.5))
+ax.legend(frameon=False, fontsize=7, ncol=1, loc="center left", bbox_to_anchor=(1.01, 0.5))
 save(fig, "pe_pb_vs_spectrum")
 print("Written: figures/benchmark_D_H, materials_ratio_4spectra, pe_pb_vs_spectrum (.png + .pdf)")
 
@@ -101,7 +103,7 @@ SPL = [("kold1956", "Feb 1956 — Koldobskiy", "spe_runs/materials_kold1956"), (
        ("kold1972", "Aug 1972 — Koldobskiy", "spe_runs/materials_kold1972"), ("king1972", "Aug 1972 — King", "spe_runs/materials_king1972"),
        ("kold1989", "Sep–Oct 1989 — Koldobskiy", "spe_runs/materials_kold1989")]
 SPL = [s for s in SPL if os.path.exists(f"{s[2]}/materials_summary.csv")]
-fig, axs = plt.subplots(1, len(SPL), figsize=(2.2 * len(SPL) + 0.6, 3.2), sharey=True)
+fig, axs = plt.subplots(1, len(SPL), figsize=(W2, 2.6), sharey=True)
 for a, (k, lab, b) in zip(np.atleast_1d(axs), SPL):
     d = {(r["material"], float(r["areal_g_cm2"])): float(r["D_cGy_5_gcm2"]) * 10 * 1.5 for r in csv.DictReader(open(f"{b}/materials_summary.csv"))}
     fo = {r["material"]: [float(r[f"BFO_{t}_mGyEq"]) for t in (5, 10, 20, 30, 40)]
@@ -109,11 +111,11 @@ for a, (k, lab, b) in zip(np.atleast_1d(axs), SPL):
     for m, c, mk in (("POLYETHYLENE", "C0", "o"), ("Al", "C7", "s"), ("Pb", "C3", "^")):
         a.plot([5, 10, 20, 30, 40], fo[m], "-", color=c, lw=1.2)                     # response matrix 5-40
         a.plot(AR, [d[(m, t)] for t in AR], mk, color=c, ms=4, label=LAB.get(m, m))  # direct simulations
-    a.axhline(250, color="k", ls=":", lw=1); a.set_title(lab, fontsize=8.5); a.set_xticks([5, 10, 20, 30, 40])
+    a.axhline(250, color="k", ls=":", lw=1); a.set_title(lab.replace(" — ", "\n"), fontsize=7.5); a.set_xticks([5, 10, 20, 30, 40])
     log_ticks(a, [2, 5, 10, 20, 50, 100, 250, 500, 1000, 2000]); a.set_ylim(1.5, 2600); a.grid(alpha=0.3)
-    a.set_xlabel("Areal density (g/cm²)")
+    a.set_xlabel("Areal density (g/cm²)"); a.tick_params(axis="x", labelsize=6.5)
 np.atleast_1d(axs)[0].set_ylabel("BFO dose at 5 g/cm² (mGy-Eq)"); np.atleast_1d(axs)[0].legend(frameon=False, loc="lower left")
-np.atleast_1d(axs)[0].text(21, 285, "NASA 30-day limit", fontsize=7)
+np.atleast_1d(axs)[min(1, len(SPL) - 1)].text(16, 300, "NASA 30-day limit", fontsize=6.5)
 fig.tight_layout(); save(fig, "bfo_vs_limit")
 print("Written: figures/bfo_vs_limit (.png + .pdf)")
 
@@ -126,21 +128,21 @@ def read_mhd(path):
     return a, float(hdr["ElementSpacing"].split()[2])
 ML = {"G4_AIR": "no shield", "G4_POLYETHYLENE": "PE", "G4_PLEXIGLASS": "PMMA", "G4_Al": "Al", "G4_Ti": "Ti",
       "G4_Fe": "Fe", "G4_Cu": "Cu", "G4_Pb": "Pb"}
-fig, ax = plt.subplots(1, 3, figsize=(10.5, 3.3))
+fig, ax = plt.subplots(1, 3, figsize=(W2, 2.6))
 for i, (m, lab) in enumerate(ML.items()):
     f = f"runs/s1234/output_{m}/dose_{m}_dose.mhd"
     if not os.path.exists(f): continue
     d, dz = read_mhd(f); z = (np.arange(len(d)) + 0.5) * dz / 10
     ax[0].plot(z, d / d.max(), lw=1.1, color="k" if m == "G4_AIR" else f"C{i}", label=lab)
 ax[0].set_xlabel("Depth in water (cm)"); ax[0].set_ylabel("Relative dose"); ax[0].set_xlim(0, 17); ax[0].grid(alpha=0.3)
-ax[0].legend(frameon=False, fontsize=7, ncol=2, loc="center left", bbox_to_anchor=(0.0, 0.62))
+ax[0].legend(frameon=False, fontsize=6.5, ncol=2, loc="center left", bbox_to_anchor=(0.0, 0.62))
 ss = list(csv.DictReader(open("validation/results/seed_stats_summary.csv")))
 ss.sort(key=lambda r: float(r["dR_pstar_cm"]))
 xs = np.arange(len(ss)); labs = [ML[r["material"]] for r in ss]
 h1 = ax[1].errorbar(xs, [float(r["dR_diff_mm"]) for r in ss], yerr=[float(r["dR_diff_sd_mm"]) for r in ss], fmt="o", color="C0", ms=4, label="ΔR80 (left axis)")
 ax[1].set_ylabel("GATE − PSTAR, ΔR80 (mm)", color="C0"); ax[1].set_ylim(0, 0.8)
 a2 = ax[1].twinx(); h2, = a2.plot(xs, [float(r["e_diff_pct"]) for r in ss], "s", mfc="none", color="C3", ms=5, label="E_out (right axis)")
-ax[1].legend([h1, h2], ["ΔR80 (left axis)", "E_out (right axis)"], frameon=False, fontsize=7, loc="lower right")
+ax[1].legend([h1, h2], ["ΔR80 (left axis)", "E_out (right axis)"], frameon=False, fontsize=6.5, loc="lower right")
 a2.set_ylabel("GATE − PSTAR, E_out (%)", color="C3"); a2.set_ylim(-0.4, 0.4); a2.axhline(0, color="C3", lw=0.6, ls=":")
 ax[1].set_xticks(xs); ax[1].set_xticklabels(labs); ax[1].grid(alpha=0.3)
 na = list(csv.DictReader(open("analysis/nuclear_attenuation.csv")))
@@ -158,15 +160,15 @@ fig.tight_layout(); save(fig, "validation_150MeV")
 # ---------------- SPE spectra ----------------
 import sys; sys.path.insert(0, os.getcwd())
 from spectra import SPECTRA
-fig, ax = plt.subplots(figsize=(4.8, 3.6))
+fig, ax = plt.subplots(figsize=(4.2, 3.0))
 E = np.geomspace(10, 5000, 400)
 for k, lab, ls, c in (("webber1956", "Feb 1956 — Webber", "--", "C0"), ("kold1956", "Feb 1956 — Koldobskiy", "-", "C0"),
                       ("king1972", "Aug 1972 — King", "--", "C1"), ("kold1972", "Aug 1972 — Koldobskiy", "-", "C1"),
-                      ("kold1989", "Oct 1989 — Koldobskiy", "-", "C2")):
+                      ("kold1989", "Sep–Oct 1989 — Koldobskiy", "-", "C2")):
     e = E[E >= 30] if k.startswith("kold") else E
     ax.loglog(e, SPECTRA[k](e), ls, color=c, lw=1.4, label=lab)
 ax.set_xlabel("Proton kinetic energy E (MeV)"); ax.set_ylabel("Integral fluence Φ(>E) (cm⁻²)")
-ax.set_ylim(1e3, 3e10); ax.set_xlim(10, 5000); ax.grid(alpha=0.3, which="both"); ax.legend(frameon=False, fontsize=7.5)
+ax.set_ylim(1e3, 3e10); ax.set_xlim(10, 5000); ax.grid(alpha=0.3, which="both"); ax.legend(frameon=False, fontsize=7)
 ax.xaxis.set_major_locator(FixedLocator([10, 30, 100, 300, 1000, 3000])); ax.xaxis.set_major_formatter(FormatStrFormatter("%g"))
 ax.xaxis.set_minor_formatter(NullFormatter())
 save(fig, "spe_spectra")
@@ -175,7 +177,7 @@ print("Written: figures/validation_150MeV, spe_spectra (.png + .pdf)")
 # ---------------- Fig. 7: mechanisms ----------------
 SPC = {"kold1956": ("C0", "o", "Feb 1956 — Koldobskiy"), "kold1972": ("C1", "o", "Aug 1972 — Koldobskiy"),
        "webber1956": ("C0", "^", "Feb 1956 — Webber"), "king1972": ("C1", "^", "Aug 1972 — King")}
-fig, ax = plt.subplots(1, 3, figsize=(10.5, 3.4))
+fig, ax = plt.subplots(1, 3, figsize=(W2, 2.8))
 av = [r for r in csv.DictReader(open("analysis/analytic_vs_gate.csv")) if r["material"] != "Al"]
 for k, (c, mk, lab) in SPC.items():
     sel = [r for r in av if r["spectrum"] == k]
@@ -188,8 +190,8 @@ log_ticks(ax[0], [0.3, 0.5, 0.7, 1, 1.5, 2, 3]); ax[0].set_xscale("log"); ax[0].
 ax[0].xaxis.set_major_formatter(FormatStrFormatter("%g")); ax[0].xaxis.set_minor_formatter(NullFormatter())
 ax[0].set_xlim(0.27, 3.8); ax[0].set_ylim(0.27, 3.8); ax[0].set_aspect("equal")
 ax[0].set_xlabel("Analytic CSDA model, ratio to Al"); ax[0].set_ylabel("GATE 10, ratio to Al (mean dose)")
-ax[0].text(0.05, 0.80, f"r = {rr:.3f}\n(72 cases)", transform=ax[0].transAxes, fontsize=8)
-ax[0].legend(frameon=False, fontsize=6.5, loc="lower right"); ax[0].grid(alpha=0.3)
+ax[0].text(0.05, 0.80, f"r = {rr:.3f}\n(72 cases)", transform=ax[0].transAxes, fontsize=7)
+ax[0].legend(frameon=False, fontsize=6.5, loc="lower right", handletextpad=0.2, borderaxespad=0.2); ax[0].grid(alpha=0.3)
 # (b) nuclear part of the ratio to Al, 20 g/cm²
 de = [r for r in csv.DictReader(open("analysis/decompose_em_nuclear.csv")) if r["material"] != "Al"]
 mats = ["POLYETHYLENE", "PLEXIGLASS", "Ti", "Fe", "Cu", "Pb"]; xs = np.arange(len(mats)); w = 0.2
@@ -200,7 +202,7 @@ for j, (k, q, hatch, lab) in enumerate((("kold1956", "D", "", "1956, D"), ("kold
     ax[1].bar(xs + (j - 1.5) * w, v, w, color=SPC[k][0], alpha=0.85 if q == "D" else 0.45, hatch=hatch, edgecolor="k", lw=0.4, label=lab)
 ax[1].axhline(0, color="k", lw=0.7); ax[1].set_xticks(xs); ax[1].set_xticklabels([LAB.get(m, m) for m in mats])
 ax[1].set_ylabel("Nuclear part of the ratio to Al\n(full − EM-only), 20 g/cm²"); ax[1].grid(alpha=0.3, axis="y")
-ax[1].set_ylim(-0.075, 0.085); ax[1].legend(frameon=False, fontsize=6.5, ncol=4, loc="upper center", columnspacing=0.8, handlelength=1.4)
+ax[1].set_ylim(-0.075, 0.1); ax[1].legend(frameon=False, fontsize=6.5, ncol=2, loc="upper center", columnspacing=0.8, handlelength=1.4)
 # (c) contribution of each particle to H − D, Al 20 g/cm², Koldobskiy 1972
 dq = np.genfromtxt("spe_runs/materials_kold1972/Al_20/dose_eq_depth.csv", delimiter=",", names=True)
 z = dq["depth_g_cm2"]; sp = [("proton", "p"), ("alpha", "α"), ("rest", "Z ≥ 3"), ("deuteron", "d"), ("He3", "³He"), ("triton", "t")]
@@ -211,7 +213,6 @@ ax[2].stackplot(z[ok], 100 * parts[:, ok] / tot[ok], labels=[l for _, l in sp],
                 colors=["#d62728", "#2ca02c", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f"], alpha=0.85)
 ax[2].set_xlim(1.5, 28.5); ax[2].set_ylim(0, 100); ax[2].set_xlabel("Depth in water (g/cm²)")
 ax[2].set_ylabel("Share of H − D (%)"); ax[2].legend(frameon=False, fontsize=6.5, loc="upper right", ncol=2)
-ax[2].set_title("Al 20 g/cm², Aug 1972 — Koldobskiy", fontsize=8)
 for a, t in zip(ax, ("(a)", "(b)", "(c)")): a.text(-0.02, 1.03, t, transform=a.transAxes, fontweight="bold")
 fig.tight_layout(); save(fig, "mechanisms")
 print("Written: figures/mechanisms (.png + .pdf)")
