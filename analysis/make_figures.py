@@ -189,7 +189,7 @@ ax[0].plot([0.27, 3.8], [0.27, 3.8], "k-", lw=0.7)
 log_ticks(ax[0], [0.3, 0.5, 0.7, 1, 1.5, 2, 3]); ax[0].set_xscale("log"); ax[0].xaxis.set_major_locator(FixedLocator([0.3, 0.5, 0.7, 1, 1.5, 2, 3]))
 ax[0].xaxis.set_major_formatter(FormatStrFormatter("%g")); ax[0].xaxis.set_minor_formatter(NullFormatter())
 ax[0].set_xlim(0.27, 3.8); ax[0].set_ylim(0.27, 3.8); ax[0].set_aspect("equal")
-ax[0].set_xlabel("Analytic CSDA model, ratio to Al"); ax[0].set_ylabel("GATE 10, ratio to Al (mean dose)")
+ax[0].set_xlabel("Analytic CSDA model, ratio to Al"); ax[0].set_ylabel("Full simulation, ratio to Al (mean dose)")
 ax[0].text(0.05, 0.80, f"r = {rr:.3f}\n(72 cases)", transform=ax[0].transAxes, fontsize=7)
 ax[0].legend(frameon=False, fontsize=6.5, loc="lower right", handletextpad=0.2, borderaxespad=0.2); ax[0].grid(alpha=0.3)
 # (b) nuclear part of the ratio to Al, 20 g/cm²
