@@ -9,7 +9,7 @@ LIM = {"skin": 1500, "lens": 1000, "BFO": 250}            # mGy-Eq, 30 days
 RBE = 1.5
 BASES = {"kold1956": "spe_runs/materials_kold1956", "kold1972": "spe_runs/materials_kold1972",
          "kold1989": "spe_runs/materials_kold1989", "webber1956": "spe_runs/materials", "king1972": "spe_runs/materials_king1972"}
-MATS = ["POLYETHYLENE", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
+MATS = ["LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
 rows = []; need = []
 for sp, b in BASES.items():
     f = f"{b}/materials_summary.csv"

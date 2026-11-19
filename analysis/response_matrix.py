@@ -14,7 +14,7 @@ sys.path.insert(0, os.getcwd()); sys.path.insert(0, "analysis")
 from spectra import SPECTRA
 trapz = getattr(np, "trapezoid", None) or np.trapz
 BASE = "spe_runs/response_matrix"; OUT = "analysis/response_matrix.npz"
-MATS = ["POLYETHYLENE", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]; AREALS = [5, 10, 20]
+MATS = ["LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]; AREALS = [5, 10, 20]
 WIN = {"skin": (0, 0.3), "BFO": (4, 6), "mean": (0, 30)}
 
 def read_mhd(path):

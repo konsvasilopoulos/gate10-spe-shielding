@@ -57,8 +57,8 @@ SP = [("kold1956", "Feb 1956 — Koldobskiy", "spe_runs/materials_kold1956"),
       ("king1972", "Aug 1972 — King", "spe_runs/materials_king1972"),
       ("kold1989", "Sep–Oct 1989 — Koldobskiy", "spe_runs/materials_kold1989")]
 SP = [s_ for s_ in SP if os.path.exists(f"{s_[2]}/materials_summary.csv")]
-MATS = ["POLYETHYLENE", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
-LAB = {"POLYETHYLENE": "PE", "PLEXIGLASS": "PMMA"}
+MATS = ["LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
+LAB = {"POLYETHYLENE": "PE", "PLEXIGLASS": "PMMA", "LITHIUM_HYDRIDE": "LiH", "WATER": "H₂O"}
 AR = [5, 10, 20]
 def load(base):
     return {(r["material"], float(r["areal_g_cm2"])): (float(r["D_cGy_mean_0-30"]), float(r["H_cSv_mean_0-30"]))
@@ -77,13 +77,15 @@ for a, (k, lab, _), t in zip(axs.flat, SP, ("(a)", "(b)", "(c)", "(d)", "(e)")):
         H = [data[k][(m, ar)][1] / data[k][("Al", ar)][1] for m in MATS]
         a.plot(x, H, "-o", color=cols[j], ms=3.5, lw=1.1, label=f"{ar} g/cm², H")
         a.plot(x, D, "--", color=cols[j], lw=1, label=f"{ar} g/cm², D")
-    a.axhline(1, color="0.5", lw=0.7); a.set_xticks(x); a.set_xticklabels([LAB.get(m, m) for m in MATS])
+    a.axhline(1, color="0.5", lw=0.7); a.set_xticks(x); a.set_xticklabels([LAB.get(m, m) for m in MATS], rotation=45, ha="right", rotation_mode="anchor")
     log_ticks(a, RT); a.set_ylim(0.27, 3.8); a.grid(alpha=0.3)
     a.set_title(lab); a.text(0.03, 0.92, t, transform=a.transAxes, fontweight="bold")
 for a in axs[:, 0]: a.set_ylabel("Ratio to Al (mean, 0–30 g/cm² water)")
-axs[0, 0].legend(frameon=False, ncol=1, loc="lower right")
+h_, l_ = axs[0, 0].get_legend_handles_labels()
 for i_, a in enumerate(list(axs.flat)[len(SP):]):
     a.axis("off"); axs[0, ncol - 1 - i_].tick_params(labelbottom=True)
+    if i_ == 0: a.legend(h_, l_, frameon=False, ncol=1, loc="center")
+if len(SP) == len(axs.flat): axs[0, 0].legend(frameon=False, ncol=1, loc="lower right")
 for a in axs[1, :]: a.tick_params(labelbottom=True)
 fig.tight_layout(); save(fig, "materials_ratio_4spectra")
 
@@ -190,7 +192,7 @@ log_ticks(ax[0], [0.3, 0.5, 0.7, 1, 1.5, 2, 3]); ax[0].set_xscale("log"); ax[0].
 ax[0].xaxis.set_major_formatter(FormatStrFormatter("%g")); ax[0].xaxis.set_minor_formatter(NullFormatter())
 ax[0].set_xlim(0.27, 3.8); ax[0].set_ylim(0.27, 3.8); ax[0].set_aspect("equal")
 ax[0].set_xlabel("Analytic CSDA model, ratio to Al"); ax[0].set_ylabel("Full simulation, ratio to Al (mean dose)")
-ax[0].text(0.05, 0.80, f"r = {rr:.3f}\n(72 cases)", transform=ax[0].transAxes, fontsize=7)
+ax[0].text(0.05, 0.80, f"r = {rr:.3f}\n({len(av)} cases)", transform=ax[0].transAxes, fontsize=7)
 ax[0].legend(frameon=False, fontsize=6.5, loc="lower right", handletextpad=0.2, borderaxespad=0.2); ax[0].grid(alpha=0.3)
 # (b) nuclear part of the ratio to Al, 20 g/cm²
 de = [r for r in csv.DictReader(open("analysis/decompose_em_nuclear.csv")) if r["material"] != "Al"]
