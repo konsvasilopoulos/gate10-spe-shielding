@@ -5,7 +5,7 @@ ratios with and without alphas. Writes analysis/alpha_contribution.csv."""
 import os, csv
 W = {"skin": "skin_0-0.3", "BFO": "5_gcm2", "mean": "mean_0-30"}
 SP = {"kold1956": "spe_runs/materials_kold1956", "kold1972": "spe_runs/materials_kold1972", "kold1989": "spe_runs/materials_kold1989"}
-MATS = ["Al", "POLYETHYLENE", "Pb"]; T = [5.0, 10.0, 20.0]; RS = [0.03, 0.10]
+MATS = ["Al", "LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "Pb"]; T = [5.0, 10.0, 20.0]; RS = [0.03, 0.10]
 def load(f):
     return {(r["material"], float(r["areal_g_cm2"])): r for r in csv.DictReader(open(f))} if os.path.exists(f) else {}
 rows = []

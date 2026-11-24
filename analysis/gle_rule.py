@@ -28,6 +28,20 @@ for r in scan:
             fo = float(r[f"{key}_Al_{t}"]); ru = float(rule(Ff, m, t)); dev.append(fo / ru)
             out.append(["GLE" + r["GLE"], m, t, float(gam(Ff, np.sqrt(ETH[("Al", t)] * ETH[(m, t)]))), ru, fo, "fold"])
 dev = np.array(dev); print(f"Folding / rule (58 GLEs x PE, Pb x 3 thicknesses): median {np.median(dev):.3f}, range {dev.min():.3f}-{dev.max():.3f}")
+# lithium hydride and water (added 19 Nov 2026): folded directly here, 58 GLEs x 3 thicknesses
+import response_matrix as rm
+for m in ("LITHIUM_HYDRIDE", "WATER"):
+    dv = []; gs = []; fs = []
+    for r in scan:
+        Ff = lambda E, g=int(r["GLE"]): F(E, g)
+        for t in (5, 10, 20):
+            fo = rm.fold(Ff, m, t, "D", "mean") / rm.fold(Ff, "Al", t, "D", "mean"); ru = float(rule(Ff, m, t))
+            g_ = float(gam(Ff, np.sqrt(ETH[("Al", t)] * ETH[(m, t)]))); dv.append(fo / ru)
+            out.append(["GLE" + r["GLE"], m, t, g_, ru, fo, "fold"])
+            if t == 20: gs.append(g_); fs.append(fo)
+    dv = np.array(dv); rr = np.corrcoef(gs, np.log(fs))[0, 1]
+    print(f"Folding / rule (58 GLEs x {m} x 3 thicknesses): median {np.median(dv):.3f}, range {dv.min():.3f}-{dv.max():.3f}; "
+          f"r(gamma, ln ratio) at 20 g/cm2 = {rr:.3f}; ratio at 20 g/cm2 {min(fs):.2f}-{max(fs):.2f}")
 # direct GATE runs
 PREV = [r for r in csv.DictReader(open("analysis/gle_rule.csv")) if r["source"] == "GATE"] if os.path.exists("analysis/gle_rule.csv") else []
 DIR = {"kold1956": "spe_runs/materials_kold1956", "kold1972": "spe_runs/materials_kold1972", "kold1989": "spe_runs/materials_kold1989",
@@ -41,8 +55,9 @@ for k, b in DIR.items():
             out.append([k, r["material"], int(r["areal"]), float(r["gamma_at_Estar"]), ru, g_, "GATE"])
         continue
     s = {(x["material"], int(float(x["areal_g_cm2"]))): float(x["D_cGy_mean_0-30"]) for x in csv.DictReader(open(f))}
-    for m in ("POLYETHYLENE", "PLEXIGLASS", "Ti", "Fe", "Cu", "Pb"):
+    for m in ("LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Ti", "Fe", "Cu", "Pb"):
         for t in (5, 10, 20):
+            if (m, t) not in s: continue
             g_ = s[(m, t)] / s[("Al", t)]; ru = float(rule(SPECTRA[k], m, t)); dd.append((k, m, t, g_ / ru))
             out.append([k, m, t, float(gam(SPECTRA[k], np.sqrt(ETH[("Al", t)] * ETH[(m, t)]))), ru, g_, "GATE"])
 dd_r = np.array([x[3] for x in dd])
@@ -51,7 +66,6 @@ for k in DIR:
     v = [x[3] for x in dd if x[0] == k]
     if v: print(f"   {k:<11} {np.median(v):.3f} ({min(v):.3f}–{max(v):.3f})")
 # OLTARIS LaRC spectra folded with the response matrix
-import response_matrix as rm
 from oltaris_larc import flux_integral
 LARC = {"larc1956": flux_integral("LaRC56")[0], "larc1972": flux_integral("LaRC72")[0]}
 for k, Ff in LARC.items():

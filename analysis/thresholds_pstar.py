@@ -11,7 +11,7 @@ import numpy as np
 sys.path.insert(0, os.getcwd())
 from spectra import SPECTRA
 
-MATS = ["POLYETHYLENE", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
+MATS = ["LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
 AREALS = [5, 10, 20]
 RUNS = {"webber1956": "spe_runs/materials/materials_summary.csv",
         "king1972": "spe_runs/materials_king1972/materials_summary.csv",
