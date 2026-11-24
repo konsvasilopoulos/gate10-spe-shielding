@@ -4,7 +4,7 @@ references used in the paper. The set of comparisons was fixed before the 10.1.1
   2) HZETRN (OLTARIS): King 1972, Webber 1956 and Koldobskiy 1972 (GLE 24+25), Al / PE / Pb at 20 g/cm2,
      D and H at the water entrance and at 0.3, 5 (BFO), 10 and 30 g/cm2 of water.
 Both releases are compared from DIRECT simulations (same settings, seed 1234): analysis/release_data/<version>/.
-(The paper's Table 5 uses the response matrix of 10.0.0; the direct 10.0.0 runs agree with it within 1.5 % in D.)
+(The paper's Table 2 uses the response matrix of 10.0.0; the direct 10.0.0 runs agree with it within 1.5 % in D.)
 10.1.1 runs: run_release_check.sh (Koldobskiy 1972) and run_release_benchmark.sh (NASA benchmark, King, Webber).
 Usage:  python analysis/release_benchmark.py  -> analysis/release_benchmark_nasa.csv, analysis/release_benchmark_hzetrn.csv
 """

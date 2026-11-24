@@ -176,7 +176,7 @@ ax.xaxis.set_minor_formatter(NullFormatter())
 save(fig, "spe_spectra")
 print("Written: figures/validation_150MeV, spe_spectra (.png + .pdf)")
 
-# ---------------- Fig. 7: mechanisms ----------------
+# ---------------- Fig. 5: mechanisms ----------------
 SPC = {"kold1956": ("C0", "o", "Feb 1956 — Koldobskiy"), "kold1972": ("C1", "o", "Aug 1972 — Koldobskiy"),
        "webber1956": ("C0", "^", "Feb 1956 — Webber"), "king1972": ("C1", "^", "Aug 1972 — King")}
 fig, ax = plt.subplots(1, 3, figsize=(W2, 2.8))

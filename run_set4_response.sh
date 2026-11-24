@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run_set4_response.sh - SET 4: response matrix.
-#   7 materials x 5/10/20 g/cm2 x 25 narrow logarithmic energy windows (30 MeV - 5 GeV), 80 000 protons each,
+#   7 materials (LiH and water: run_set8_lih_water_rm.sh) x 5/10/20 g/cm2 x 25 narrow logarithmic energy windows (30 MeV - 5 GeV), 80 000 protons each,
 #   with D, H (LET actors) and the per-particle split; no phase space.
 #   Then: python3 analysis/response_matrix.py build   and   python3 analysis/response_matrix.py validate
 # Usage:  bash run_set4_response.sh 2>&1 | tee spe_runs/set4.log     (~2.5-3 h, keeps the Mac awake)

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
 # run_materials_spe.sh - Material comparison for one SPE spectrum (SPECTRUM=..., default webber1956), wide geometry,
-# 7 materials x 3 areal densities, with dose per particle type and dose equivalent.
+# the materials in MATERIALS (default: the 7 of sets 1-3; LiH and water were added by run_set7_lih_water.sh)
+# x 3 areal densities, with dose per particle type and dose equivalent.
 #   Output: spe_runs/materials[_<spectrum>]/<material>_<g/cm2>/g<emin>-<emax>/
 #   Then:   python compare_materials_spe.py <output folder>
 #

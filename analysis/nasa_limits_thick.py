@@ -1,5 +1,5 @@
 """nasa_limits_thick.py - Minimum areal density for BFO < 250 mGy-Eq (NASA 30-day limit) from the response matrix
-at 5, 10, 20, 30 and 40 g/cm2 (logarithmic interpolation), for the 5 spectra and 7 materials. BFO = D(4-6 g/cm2) x RBE 1.5.
+at 5, 10, 20, 30 and 40 g/cm2 (logarithmic interpolation), for the 5 spectra and 9 materials. BFO = D(4-6 g/cm2) x RBE 1.5.
 Needs response_matrix.npz with the 30/40 g/cm2 shields (response_matrix.py build_thick).
 Writes analysis/nasa_limits_thick.csv."""
 import sys, csv

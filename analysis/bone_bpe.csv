@@ -1,0 +1,9 @@
+test,spectrum,ratio,D mean with,H mean with,D BFO with,H BFO with,D mean without,H mean without,D BFO without,H BFO without,D mean change %,H mean change %,D BFO change %,H BFO change %
+bone 2 g/cm2,kold1956,PE/Al,0.8187,0.8344,0.7878,0.7976,0.817,0.8313,0.7863,0.7925,0.21,0.38,0.18,0.65
+bone 2 g/cm2,kold1956,Pb/Al,1.2798,1.2576,1.3491,1.3393,1.332,1.3101,1.4113,1.3998,-3.92,-4.01,-4.41,-4.32
+bone 2 g/cm2,kold1956,Al with/without bone,0.9375,0.9472,0.9236,0.935,,,,,,,,
+borated PE (GATE 10.1.1),kold1956,BPE5/PE,1.0071,1.0042,1.0141,1.0161,,,,,,,,
+bone 2 g/cm2,kold1972,PE/Al,0.6014,0.5555,0.5776,0.5221,0.5791,0.5379,0.5628,0.5268,3.86,3.27,2.63,-0.9
+bone 2 g/cm2,kold1972,Pb/Al,1.8294,1.8363,1.9072,1.9007,1.9545,1.9721,2.0363,2.1114,-6.4,-6.89,-6.34,-9.98
+bone 2 g/cm2,kold1972,Al with/without bone,0.8384,0.8516,0.8333,0.8735,,,,,,,,
+borated PE (GATE 10.1.1),kold1972,BPE5/PE,1.02,1.0173,1.0225,1.0343,,,,,,,,

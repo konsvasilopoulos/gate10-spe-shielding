@@ -35,7 +35,7 @@ def test_dose_equivalent_not_below_dose(npz):
 
 
 def test_fold_reference_value():
-    # Koldobskiy 1989, 20 g/cm2 Al, mean dose over 0-30 g/cm2 of water (paper, Sect. 3.7)
+    # Koldobskiy 1989, 20 g/cm2 Al, mean dose over 0-30 g/cm2 of water (paper, Table 3)
     assert rm.fold(SPECTRA["kold1989"], "Al", 20, "D") == pytest.approx(12.58, rel=2e-3)
 
 
@@ -69,7 +69,7 @@ def test_mean_dose_equivalent_within_paper_bounds():
 
 
 def test_nasa_limit_table():
-    # Table 6: minimum areal density for BFO < 250 mGy-Eq (RBE 1.5), recomputed from the matrix
+    # Table 4: minimum areal density for BFO < 250 mGy-Eq (RBE 1.5), recomputed from the matrix
     import nasa_limits_thick as nl
     with open("analysis/nasa_limits_thick.csv") as f:
         stored = {(r["spectrum"], r["material"]): r for r in csv.DictReader(f)}

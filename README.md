@@ -4,16 +4,17 @@
 
 Simulation and analysis code for the article
 
-> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), *The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study*, manuscript in preparation for Life Sciences in Space Research (2026).
+> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), K. Chatzipapas, *The spectral slope of solar particle events sets the effectiveness of shielding materials*, manuscript in preparation for Life Sciences in Space Research (2026).
 
 The code uses [GATE 10](https://github.com/OpenGATE/opengate) (opengate 10.0.0, Geant4 11.2.p01) to transport solar particle event (SPE) protons through a shield slab into a 30 g/cm² water phantom, and computes absorbed dose and dose equivalent (ICRP 60). It covers:
 
 - validation with 150 MeV protons against NIST PSTAR and measured reaction cross sections;
 - the NASA code-comparison benchmark (Webber 1956 SPE, 20 g/cm² Al; Heinbockel et al., NASA/TP-2009-215560);
-- a comparison of seven shield materials (PE, PMMA, Al, Ti, Fe, Cu, Pb) at 5, 10 and 20 g/cm² for five SPE spectra: the classical Webber 1956 and King 1972 fits and the Koldobskiy et al. (2021) reconstructions of February 1956, August 1972 and September–October 1989;
+- a comparison of nine shield materials (polyethylene, lithium hydride, water, PMMA, Al, Ti, Fe, Cu, Pb) at 5, 10 and 20 g/cm² for five SPE spectra: the classical Webber 1956 and King 1972 fits and the Koldobskiy et al. (2021) reconstructions of February 1956, August 1972 and September–October 1989;
 - an analytic CSDA transmission-threshold model and an EM-only/full-physics decomposition;
-- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to all 58 ground-level enhancements (GLEs) since 1956;
-- a comparison with the deterministic code HZETRN (NASA OLTARIS) for the same slabs and four spectra, including the Tylka et al. reconstruction of October 1989.
+- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to the 58 ground-level enhancement (GLE) spectra reconstructed by Koldobskiy et al. (2021), with a threshold rule that gives the dose ratio of a material to Al from the slope of the spectrum near the transmission threshold;
+- a comparison with the deterministic code HZETRN (NASA OLTARIS) for the same slabs and four spectra, including the Tylka et al. reconstruction of October 1989 and the LaRC fits of February 1956 and August 1972 (Wilson & Denn 1976);
+- sensitivity tests: isotropic incidence, SPE α particles, particle-specific RBE (NCRP 132), the neutron share of the BFO dose, a cortical-bone layer in front of the water and borated polyethylene.
 
 ## A note for GATE 10 users: `spectrum_histogram` weights
 
@@ -35,7 +36,7 @@ pip install pytest
 pytest
 ```
 
-The tests (a few seconds, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 6 of the paper) and the comparison with OLTARIS (Table 5). They run on every push (GitHub Actions).
+The tests (a few seconds, no GATE needed) check the spectrum normalisations, the response matrix and its folding against the stored validation results and the NASA-limit table (Table 4 of the paper) and the comparison with OLTARIS (Table 2). They run on every push (GitHub Actions).
 
 ## Repository layout
 
@@ -53,7 +54,7 @@ analysis/                  paper analyses, figures and their CSV outputs
 analysis/response_matrix.npz   the response matrix (see below)
 benchmark/                 digitised NASA/TP-2009-215560 curves (WebPlotDigitizer)
 oltaris/                   HZETRN results from OLTARIS (TARIS 5.01) for Al, PE and Pb slabs (see analysis/oltaris_compare.py)
-pstar/                     NIST PSTAR tables for the Geant4 materials
+pstar/                     NIST PSTAR tables for the Geant4 materials (lithium hydride: scaled from PE, analysis/pstar_scaled.py)
 figures/                   paper figures (PDF)
 tests/                     pytest checks of the spectra, the response matrix and the paper tables
 ```
@@ -69,10 +70,13 @@ Run times are for 4 cores of an Apple M5; set `JOBS` to the number of fast cores
 | Koldobskiy 1956/1972 materials + NASA benchmark | `bash run_set1_kold_nasa.sh` | 7–10 h |
 | King 1972 and Webber 1956 materials | `bash run_set2_king_webber.sh` | 8–10 h |
 | Koldobskiy 1989 materials + QBBC test | `bash run_set3_1989_qbbc.sh` | 3.5–4 h |
-| Response matrix (525 runs) | `bash run_set4_response.sh`, then `python analysis/response_matrix.py build` | 2.5–3 h |
+| Response matrix, 7 materials (525 runs) | `bash run_set4_response.sh`, then `python analysis/response_matrix.py build` | 2.5–3 h |
 | EM-only decomposition | `bash run_em_only.sh`, then `python analysis/decompose_em_nuclear.py` | ~2 h |
 | 30 and 40 g/cm2 shields (response matrix + direct check) | `bash run_set5_thick.sh`, then `python analysis/response_matrix.py build_thick`, `python analysis/nasa_limits_thick.py` | ~1-2.5 h |
 | SPE alpha particles (Al, PE, Pb, 5-20 g/cm2) | `bash run_set6_alpha.sh`, then `python analysis/alpha_contribution.py` | ~2.2 h |
+| Neutron share of the BFO dose (Al, PE, Pb at 20 g/cm2, with and without neutron hadronic processes) | `bash run_neutron_share.sh`, then `python analysis/neutron_share.py` | ~45 min |
+| Lithium hydride and water (direct runs, 5 spectra) | `bash run_set7_lih_water.sh`, then `compare_materials_spe.py` for each spectrum | ~3 h |
+| Lithium hydride and water: response matrix 5–40 g/cm2, α particles; cortical-bone layer | `bash run_set8_lih_water_rm.sh`, then `python analysis/response_matrix.py add`, `python analysis/alpha_contribution.py`, `python analysis/bone_bpe.py` | ~3.3 h |
 | Isotropic-incidence test (Al, PE, Pb at 20 g/cm2) | `bash run_iso_test.sh`, then `python analysis/iso_test.py` | ~1.5 h |
 | Lateral-size and layered-shield tests | `bash run_quick_tests.sh`, then `python analysis/quick_tests.py` | ~35 min |
 | Comparisons with external references repeated with GATE 10.1.1 | `bash run_release_benchmark.sh`, then `python analysis/release_benchmark.py` | ~2.5 h |
@@ -80,13 +84,16 @@ Run times are for 4 cores of an Apple M5; set `JOBS` to the number of fast cores
 
 After each material set: `python compare_materials_spe.py spe_runs/materials_<spectrum>` (Webber: `spe_runs/materials`).
 
+The borated-polyethylene test (5 % boron by mass, 1.04 g/cm³, I = 58.35 eV from Bragg additivity; Al, PE and borated PE at 20 g/cm² for the Koldobskiy 1956 and 1972 spectra) needs a user-defined material with its own ionisation potential, which opengate 10.0.0 does not support. It was run with opengate 10.1.1 / Geant4 11.4.2 and a custom-material definition that is not part of this repository; only ratios within that release are used (`analysis/bone_bpe.csv`).
+
 Analyses and figures (from the CSV summaries):
 
 ```bash
+python analysis/pstar_scaled.py            # PSTAR-format table for lithium hydride (scaled from PE)
 python analysis/thresholds_pstar.py        # analytic threshold model vs GATE
 python analysis/uncertainty_budget.py
 python analysis/nasa_limits.py             # NASA-STD-3001 30-day limits (direct runs, 5-20 g/cm2)
-python analysis/nasa_limits_thick.py       # same with the response matrix, 5-40 g/cm2 (Table 6)
+python analysis/nasa_limits_thick.py       # same with the response matrix, 5-40 g/cm2 (Table 4)
 python analysis/fold_spectra.py crossval   # group folding; predict1989 / check1989 / scan
 python analysis/response_matrix.py validate
 python analysis/response_matrix.py scan    # all 58 GLEs -> analysis/rm_gle_scan.csv
@@ -95,6 +102,9 @@ python analysis/spectral_uncertainty.py    # 68 % envelope of the reconstructed 
 python analysis/iso_test.py               # isotropic vs normal incidence (after run_iso_test.sh)
 python analysis/alpha_contribution.py     # SPE alpha particles relative to protons (after run_set6_alpha.sh)
 python analysis/oltaris_compare.py        # GATE vs HZETRN (OLTARIS) and Tylka vs Koldobskiy for October 1989
+python analysis/oltaris_larc.py           # OLTARIS LaRC spectra (Wilson & Denn 1976) for 1956 and 1972
+python analysis/rbe_check.py              # particle-specific RBE from the HZETRN particle doses
+python analysis/bone_bpe.py               # bone layer and borated PE (ratios to Al / PE)
 python analysis/make_figures.py; python analysis/make_fig_geometry.py; python analysis/fig_response.py
 ```
 
@@ -102,7 +112,7 @@ The CSV files in `analysis/` and `validation/results/` are the outputs used in t
 
 ## Using the response matrix
 
-`analysis/response_matrix.npz` holds, for each material `M` (POLYETHYLENE, PLEXIGLASS, Al, Ti, Fe, Cu, Pb) and areal density `T` (5, 10, 20, 30, 40 g/cm²):
+`analysis/response_matrix.npz` holds, for each material `M` (POLYETHYLENE, LITHIUM_HYDRIDE, WATER, PLEXIGLASS, Al, Ti, Fe, Cu, Pb) and areal density `T` (5, 10, 20, 30, 40 g/cm²):
 
 - `D_M_T`, `H_M_T`: arrays of shape (25, 300) with the absorbed dose (Gy cm²) and dose equivalent (Sv cm²) per unit incident fluence, for 25 logarithmic energy windows (`edges`, MeV) and 300 depth voxels of 1 mm in water (`z`, g/cm²);
 - normal incidence on an infinite slab, scored in the central 30 × 30 cm² of a wide water phantom.
@@ -122,7 +132,7 @@ The raw dose and LET maps (MetaImage) of all runs are archived on Zenodo: DOI to
 
 If you use this code or the response matrix, please cite the article:
 
-> K. Vasilopoulos, The spectral slope of solar particle events sets the effectiveness of shielding materials: a GATE 10 study, *Life Sciences in Space Research* (manuscript in preparation, 2026).
+> K. Vasilopoulos, K. Chatzipapas, The spectral slope of solar particle events sets the effectiveness of shielding materials, *Life Sciences in Space Research* (manuscript in preparation, 2026).
 
 and the archived software version:
 

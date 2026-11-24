@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # run_set5_thick.sh - SET 5: shields of 30 and 40 g/cm2, so that the NASA-limit table has no "> 20" entries.
 #   A. Direct check: Koldobskiy 1989, Al and PE at 30 g/cm2 (7 groups, D and H) -> test of the folding above 20 g/cm2.
-#   B. Response matrix: 7 materials x 30/40 g/cm2 x 25 narrow windows (30 MeV - 5 GeV), 80 000 protons each.
+#   B. Response matrix: 7 materials (LiH and water: run_set8_lih_water_rm.sh) x 30/40 g/cm2 x 25 narrow windows (30 MeV - 5 GeV), 80 000 protons each.
 #   Then: python3 analysis/response_matrix.py build_thick   and   python3 analysis/nasa_limits_thick.py
 # Usage:  bash run_set5_thick.sh 2>&1 | tee spe_runs/set5.log     (~1-2.5 h, keeps the Mac awake)
 # If interrupted, run the same command again; it resumes where it stopped.

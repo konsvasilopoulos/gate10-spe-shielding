@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run_set2_king_webber.sh - SET 2 (after the spectrum-sampling fix of 22/10/2026):
-#   Materials with King 1972 and Webber 1956 (7 materials x 5/10/20 g/cm2)
+#   Materials with King 1972 and Webber 1956 (7 materials x 5/10/20 g/cm2; LiH and water: run_set7_lih_water.sh)
 # Earlier results are NOT deleted: they are moved to spe_runs/_old_tilted/.
 # Usage:  bash run_set2_king_webber.sh 2>&1 | tee spe_runs/set2.log    (~8-10 h, keeps the Mac awake)
 # If interrupted, run the same command again; it resumes where it stopped.

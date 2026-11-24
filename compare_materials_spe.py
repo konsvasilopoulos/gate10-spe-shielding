@@ -10,7 +10,7 @@ import os, glob, csv, subprocess, sys
 import numpy as np
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "spe_runs/materials"
-ORDER = ["POLYETHYLENE", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
+ORDER = ["LITHIUM_HYDRIDE", "POLYETHYLENE", "WATER", "PLEXIGLASS", "Al", "Ti", "Fe", "Cu", "Pb"]
 POINTS = {"skin_0-0.3": (0, 0.3), "5_gcm2": (4, 6), "10_gcm2": (9, 11), "mean_0-30": (0, 30)}
 
 res = {}

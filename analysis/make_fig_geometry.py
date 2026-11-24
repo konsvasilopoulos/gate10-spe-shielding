@@ -41,7 +41,7 @@ def lab(xy, xytext, txt, color="k"):
     ax.annotate(txt, xy=xy, xytext=xytext, fontsize=7.3, color=color, va="center",
                 arrowprops=dict(arrowstyle="-", lw=0.5, color="0.3"))
 lab((40, ZS), (64, ZS), "Proton source 80 × 80 cm\nSPE spectrum, normal incidence", C["src"])
-lab((60, -T / 2), (64, -5.5), "Shield 120 × 120 cm\nPE, PMMA, Al, Ti, Fe, Cu, Pb")
+lab((60, -T / 2), (64, -5.5), "Shield 120 × 120 cm\nPE, LiH, water, PMMA,\nAl, Ti, Fe, Cu, Pb")
 lab((15, 0), (64, 3.0), "Phase-space plane, 1 mm air,\n30 × 30 cm: fluence of all species")
 lab((15, 16), (64, 13.5), "Scoring column 30 × 30 cm,\n1 mm voxels: D and H\n(LET-binned, ICRP-60 Q)", "#08306b")
 lab((60, 25), (64, 25), "Water 120 × 120 × 30 cm")

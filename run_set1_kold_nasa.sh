@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run_set1_kold_nasa.sh - SET 1 (after the spectrum-sampling fix of 22/10/2026):
-#   1. Materials with Koldobskiy 1972 and 1956 (7 materials x 5/10/20 g/cm2)
+#   1. Materials with Koldobskiy 1972 and 1956 (7 materials x 5/10/20 g/cm2; LiH and water: run_set7_lih_water.sh)
 #   2. NASA benchmark: Webber 1956, Al 20 g/cm2 + water, D and H
 # Earlier results are NOT deleted: they are moved to spe_runs/_old_tilted/.
 # Usage:  bash run_set1_kold_nasa.sh 2>&1 | tee spe_runs/set1.log     (~7-10 h, keeps the Mac awake)

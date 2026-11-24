@@ -6,6 +6,7 @@
   fold <GLE number or spectrum name> : D and H for any spectrum.
   scan [i0 i1] : all GLEs of Koldobskiy et al. (2021) -> analysis/rm_gle_scan.csv
   build_thick : adds the 30 and 40 g/cm2 shields of run_set5_thick.sh
+  add      : adds lithium hydride and water (run_set8_lih_water_rm.sh, 5-40 g/cm2) to the existing matrix
 NOTE: build needs the raw runs of run_set4_response.sh (~2-3 h); validate/fold/scan only need response_matrix.npz.
 Folding:  D(z) = sum_b Phi_b * R_b(z) * c_b,  c_b = in-window shape correction (analytic CSDA; small, windows x1.23)."""
 import os, sys, glob, json, csv
@@ -52,6 +53,23 @@ def build_thick(base="spe_runs/response_matrix_thick", areals=(30, 40)):
             assert np.allclose(e, M["edges"], rtol=1e-3), "different energy windows"
             M[f"D_{m}_{t}"] = np.array([r[2] for r in rows]); M[f"H_{m}_{t}"] = np.array([r[3] for r in rows])
             print(f"  {m:<13}{t:>3} g/cm2: {len(rows)} windows")
+    np.savez(OUT, **M); print(f"Written: {OUT} ({n0} -> {len(M)} arrays)")
+
+def add_materials(mats=("LITHIUM_HYDRIDE", "WATER")):
+    """Adds new materials to the existing response_matrix.npz (run_set8_lih_water_rm.sh: 5/10/20 g/cm2 from BASE,
+    30/40 g/cm2 from spe_runs/response_matrix_thick) without touching the arrays already there."""
+    M = dict(np.load(OUT)); n0 = len(M)
+    for base, areals in ((BASE, AREALS), ("spe_runs/response_matrix_thick", (30, 40))):
+        for m in mats:
+            for t in areals:
+                dirs = sorted(glob.glob(f"{base}/{m}_{t}/g*"), key=lambda p: float(p.split("/g")[-1].split("-")[0]))
+                dirs = [d for d in dirs if os.path.exists(f"{d}/setup.json")]
+                if len(dirs) != len(M["edges"]) - 1: print(f"  [!] {m} {t}: {len(dirs)} windows"); continue
+                rows = [run_DH(d) for d in dirs]
+                e = np.array([r[0] for r in rows] + [rows[-1][1]])
+                assert np.allclose(e, M["edges"], rtol=1e-3), "different energy windows"
+                M[f"D_{m}_{t}"] = np.array([r[2] for r in rows]); M[f"H_{m}_{t}"] = np.array([r[3] for r in rows])
+                print(f"  {m:<16}{t:>3} g/cm2: {len(rows)} windows")
     np.savez(OUT, **M); print(f"Written: {OUT} ({n0} -> {len(M)} arrays)")
 
 def build():
@@ -127,6 +145,7 @@ if __name__ == "__main__":
     if mode == "build": build()
     elif mode == "validate": validate()
     elif mode == "build_thick": build_thick()
+    elif mode == "add": add_materials()
     elif mode == "fold":
         arg = sys.argv[2]
         if arg.isdigit():

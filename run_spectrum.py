@@ -69,6 +69,7 @@ from spectra import spectrum_bins
 DENSITY = {  # g/cm3, Geant4/NIST values
     "G4_AIR": 0.00120479, "G4_POLYETHYLENE": 0.94, "G4_PLEXIGLASS": 1.19, "G4_Al": 2.699,
     "G4_Ti": 4.54, "G4_Fe": 7.874, "G4_Cu": 8.96, "G4_Pb": 11.35, "G4_WATER": 1.0,
+    "G4_LITHIUM_HYDRIDE": 0.82, "G4_BONE_CORTICAL_ICRP": 1.92,   # added in November 2026 (sets 7 and 8)
 }
 
 SOURCE_XY, SLAB_XY, DETECTOR_XY = 40, 60, 30   # cm (defaults; SOURCE_XY and SLAB_XY can be changed with --source-xy/--slab-xy)
