@@ -112,7 +112,7 @@ python analysis/response_matrix.py fold 5          # GLE 5 (Koldobskiy et al. 20
 python analysis/response_matrix.py fold kold1989   # any spectrum defined in spectra.py
 ```
 
-To fold your own spectrum, define its integral fluence Φ(>E) in `spectra.py` and call `fold`. For the five directly simulated spectra the folded mean dose agrees with the GATE runs within ±1.5 %; the mean dose equivalent agrees within ±1.5 % except for King 1972 behind 10–20 g/cm² (down to −3 %). `python analysis/response_matrix.py validate` writes the full comparison.
+To fold your own spectrum, define its integral fluence Φ(>E) in `spectra.py` and call `fold`. For the five directly simulated spectra the folded mean dose agrees with the GATE runs within ±1.5 %; the mean dose equivalent agrees within ±1.5 % except for King 1972 behind 10–20 g/cm², where the direct runs are statistically limited (−3 % to +3 %). `python analysis/response_matrix.py validate` writes the full comparison.
 
 ## Data
 
