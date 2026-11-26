@@ -105,6 +105,8 @@ python analysis/oltaris_compare.py        # GATE vs HZETRN (OLTARIS) and Tylka v
 python analysis/oltaris_larc.py           # OLTARIS LaRC spectra (Wilson & Denn 1976) for 1956 and 1972
 python analysis/rbe_check.py              # particle-specific RBE from the HZETRN particle doses
 python analysis/bone_bpe.py               # bone layer and borated PE (ratios to Al / PE)
+python analysis/gle_rule_td.py            # threshold rule on the Tylka & Dietrich Band fits of 59 GLEs (Raukunen et al. 2018)
+python analysis/energy_contrib.py         # primary energies that give the BFO dose and the Al-PE difference
 python analysis/make_figures.py; python analysis/make_fig_geometry.py; python analysis/fig_response.py
 ```
 
