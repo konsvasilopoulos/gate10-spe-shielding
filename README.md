@@ -12,7 +12,8 @@ The code uses [GATE 10](https://github.com/OpenGATE/opengate) (opengate 10.0.0, 
 - the NASA code-comparison benchmark (Webber 1956 SPE, 20 g/cm² Al; Heinbockel et al., NASA/TP-2009-215560);
 - a comparison of nine shield materials (polyethylene, lithium hydride, water, PMMA, Al, Ti, Fe, Cu, Pb) at 5, 10 and 20 g/cm² for five SPE spectra: the classical Webber 1956 and King 1972 fits and the Koldobskiy et al. (2021) reconstructions of February 1956, August 1972 and September–October 1989;
 - an analytic CSDA transmission-threshold model and an EM-only/full-physics decomposition;
-- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to the 58 ground-level enhancement (GLE) spectra reconstructed by Koldobskiy et al. (2021), with a threshold rule that gives the dose ratio of a material to Al from the slope of the spectrum near the transmission threshold;
+- a response matrix (25 energy windows, 30 MeV–5 GeV) that folds any SPE spectrum without new simulations, applied to the 58 ground-level enhancement (GLE) spectra reconstructed by Koldobskiy et al. (2021) and to the Band fits of 59 GLEs by the method of Tylka & Dietrich, with a threshold rule that gives the dose ratio of a material to Al from the slope of the spectrum near the transmission threshold;
+- a command-line tool that gives doses, ratios to Al and the shield needed for the NASA limit for any user spectrum ([Evaluate your own spectrum](#evaluate-your-own-spectrum));
 - a comparison with the deterministic code HZETRN (NASA OLTARIS) for the same slabs and four spectra, including the Tylka et al. reconstruction of October 1989 and the LaRC fits of February 1956 and August 1972 (Wilson & Denn 1976);
 - sensitivity tests: isotropic incidence, SPE α particles, particle-specific RBE (NCRP 132), the neutron share of the BFO dose, a cortical-bone layer in front of the water and borated polyethylene.
 
@@ -107,10 +108,30 @@ python analysis/rbe_check.py              # particle-specific RBE from the HZETR
 python analysis/bone_bpe.py               # bone layer and borated PE (ratios to Al / PE)
 python analysis/gle_rule_td.py            # threshold rule on the Tylka & Dietrich Band fits of 59 GLEs (Raukunen et al. 2018)
 python analysis/energy_contrib.py         # primary energies that give the BFO dose and the Al-PE difference
+python analysis/gle_cumulative.py         # event size vs PE benefit; doses summed over all GLEs
 python analysis/make_figures.py; python analysis/make_fig_geometry.py; python analysis/fig_response.py
 ```
 
 The CSV files in `analysis/` and `validation/results/` are the outputs used in the paper.
+
+## Evaluate your own spectrum
+
+`analysis/evaluate_spectrum.py` folds any proton spectrum with the response matrix, with no new simulation. It needs only
+numpy and the files in this repository (no GATE). For each of the nine materials at 5–40 g/cm² it gives the BFO dose
+(mGy and mGy-Eq, RBE 1.5), the mean dose, the ratios to Al, the threshold-rule estimate with the local slope γ, and the
+minimum areal density for the NASA 30-day BFO limit (250 mGy-Eq).
+
+```bash
+python analysis/evaluate_spectrum.py --band 1.75e8 1.76 5.04 0.566        # Band function in rigidity (J0 cm^-2, R0 GV)
+python analysis/evaluate_spectrum.py --gle 5                               # Koldobskiy et al. (2021) GLE 5
+python analysis/evaluate_spectrum.py --table my_event.csv --csv out.csv    # columns: E (MeV), J(>E) (cm^-2)
+python analysis/evaluate_spectrum.py --table my_event.txt --differential   # columns: E (MeV), dN/dE (cm^-2 MeV^-1)
+```
+
+From Python: `from evaluate_spectrum import evaluate; rows, limits = evaluate(F)` with `F(E)` the integral fluence
+above `E` (MeV) in cm^-2. The spectrum must reach down to 30 MeV; the response matrix covers 30–5000 MeV. The results
+hold for the geometry of the article (broad beam at normal incidence on a slab, water phantom behind it); they are
+meant for comparing spectra and materials, not as design values.
 
 ## Using the response matrix
 
