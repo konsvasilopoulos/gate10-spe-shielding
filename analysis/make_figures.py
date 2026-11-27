@@ -137,7 +137,7 @@ for i, (m, lab) in enumerate(ML.items()):
     d, dz = read_mhd(f); z = (np.arange(len(d)) + 0.5) * dz / 10
     ax[0].plot(z, d / d.max(), lw=1.1, color="k" if m == "G4_AIR" else f"C{i}", label=lab)
 ax[0].set_xlabel("Depth in water (cm)"); ax[0].set_ylabel("Relative dose"); ax[0].set_xlim(0, 17); ax[0].grid(alpha=0.3)
-ax[0].legend(frameon=False, fontsize=6.5, ncol=2, loc="center left", bbox_to_anchor=(0.0, 0.62))
+ax[0].legend(frameon=False, fontsize=6.5, ncol=1, loc="upper left", bbox_to_anchor=(0.0, 0.91), handlelength=1.4, labelspacing=0.12, borderaxespad=0.3)
 ss = list(csv.DictReader(open("validation/results/seed_stats_summary.csv")))
 ss.sort(key=lambda r: float(r["dR_pstar_cm"]))
 xs = np.arange(len(ss)); labs = [ML[r["material"]] for r in ss]
