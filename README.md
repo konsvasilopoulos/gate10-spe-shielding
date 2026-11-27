@@ -4,7 +4,7 @@
 
 Simulation and analysis code for the article
 
-> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), K. Chatzipapas, *The spectral slope of solar particle events sets the effectiveness of shielding materials*, manuscript in preparation for Life Sciences in Space Research (2026).
+> K. Vasilopoulos ([ORCID 0009-0001-7245-1404](https://orcid.org/0009-0001-7245-1404)), K. Chatzipapas, P. Papadimitroulas, *The spectral slope of solar particle events sets the effectiveness of shielding materials*, manuscript in preparation for Life Sciences in Space Research (2026).
 
 The code uses [GATE 10](https://github.com/OpenGATE/opengate) (opengate 10.0.0, Geant4 11.2.p01) to transport solar particle event (SPE) protons through a shield slab into a 30 g/cm² water phantom, and computes absorbed dose and dose equivalent (ICRP 60). It covers:
 
@@ -155,7 +155,7 @@ The raw dose and LET maps (MetaImage) of all runs are archived on Zenodo: DOI to
 
 If you use this code or the response matrix, please cite the article:
 
-> K. Vasilopoulos, K. Chatzipapas, The spectral slope of solar particle events sets the effectiveness of shielding materials, *Life Sciences in Space Research* (manuscript in preparation, 2026).
+> K. Vasilopoulos, K. Chatzipapas, P. Papadimitroulas, The spectral slope of solar particle events sets the effectiveness of shielding materials, *Life Sciences in Space Research* (manuscript in preparation, 2026).
 
 and the archived software version:
 

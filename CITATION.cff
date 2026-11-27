@@ -19,6 +19,10 @@ preferred-citation:
     - family-names: Chatzipapas
       given-names: Konstantinos
       affiliation: "Delft University of Technology, Netherlands"
+    - family-names: Papadimitroulas
+      given-names: Panagiotis
+      affiliation: "Bioemission Technology Solutions (BIOEMTECH), Athens, Greece; University of Thessaly, Larissa, Greece"
+      orcid: "https://orcid.org/0000-0002-5981-6149"
   journal: "Life Sciences in Space Research"
   year: 2026
   notes: "Manuscript in preparation"
